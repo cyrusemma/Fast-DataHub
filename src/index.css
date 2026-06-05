@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-surface text-dark font-body antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d6e0f0; border-radius: 9999px; border: 2px solid transparent; background-clip: content-box; }
+  ::-webkit-scrollbar-thumb:hover { background: #b9c7df; background-clip: content-box; }
+}
+
+@layer components {
+  .skeleton {
+    @apply relative overflow-hidden bg-slate-200/70 rounded-md;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 1.5s infinite;
+  }
+  .card {
+    @apply bg-white rounded-xl shadow-card;
+  }
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary;
+  }
+  /* Mesh gradient backdrop for auth + hero surfaces */
+  .mesh-bg {
+    background-color: #0a0f1e;
+    background-image:
+      radial-gradient(at 18% 22%, rgba(0, 102, 255, 0.55) 0px, transparent 50%),
+      radial-gradient(at 82% 12%, rgba(0, 196, 140, 0.35) 0px, transparent 45%),
+      radial-gradient(at 75% 85%, rgba(0, 102, 255, 0.4) 0px, transparent 50%),
+      radial-gradient(at 12% 90%, rgba(99, 102, 241, 0.35) 0px, transparent 45%);
+  }
+}
