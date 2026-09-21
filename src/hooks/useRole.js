@@ -37,6 +37,7 @@ const navItems = {
     { label: 'Home', icon: 'Home', path: '/home' },
     { label: 'Buy Data', icon: 'Wifi', path: '/buy' },
     { label: 'History', icon: 'History', path: '/history' },
+    { label: 'Wallet', icon: 'Wallet', path: '/wallet' },
   ],
 }
 
