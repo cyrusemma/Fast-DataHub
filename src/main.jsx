@@ -4,7 +4,11 @@ import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import App from './App'
+import { useThemeStore } from './store/themeStore'
 import './index.css'
+
+// Initialize active theme on app load
+useThemeStore.getState().initTheme()
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -2,13 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
+:root,
+.theme-light {
+  --color-bg: #f8faff;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f1f5f9;
+  --color-text: #0a0f1e;
+  --color-text-muted: #64748b;
+  --color-primary: #0066ff;
+  --color-primary-50: #ebf2ff;
+  --color-primary-100: #d6e5ff;
+  --color-primary-hover: #0052cc;
+  --color-border: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
+  --color-card: #ffffff;
+}
+
+.theme-dark {
+  --color-bg: #0b0f19;
+  --color-surface: #111827;
+  --color-surface-subtle: #1f2937;
+  --color-text: #f9fafb;
+  --color-text-muted: #9ca3af;
+  --color-primary: #3b82f6;
+  --color-primary-50: rgba(59, 130, 246, 0.15);
+  --color-primary-100: rgba(59, 130, 246, 0.25);
+  --color-primary-hover: #2563eb;
+  --color-border: #1f2937;
+  --color-border-subtle: #182234;
+  --color-card: #111827;
+}
+
+.theme-outdoor {
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f0f0f0;
+  --color-text: #000000;
+  --color-text-muted: #1a1a1a;
+  --color-primary: #0000ee;
+  --color-primary-50: #e0e0ff;
+  --color-primary-100: #c0c0ff;
+  --color-primary-hover: #0000cc;
+  --color-border: #000000;
+  --color-border-subtle: #000000;
+  --color-card: #ffffff;
+}
+
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   body {
-    @apply bg-surface text-dark font-body antialiased;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    @apply font-body antialiased transition-colors duration-200;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
@@ -24,6 +72,9 @@
   .skeleton {
     @apply relative overflow-hidden bg-slate-200/70 rounded-md;
   }
+  .theme-dark .skeleton {
+    @apply bg-slate-800/80;
+  }
   .skeleton::after {
     content: '';
     @apply absolute inset-0;
@@ -31,8 +82,17 @@
     transform: translateX(-100%);
     animation: shimmer 1.5s infinite;
   }
+  .theme-dark .skeleton::after {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  }
   .card {
-    @apply bg-white rounded-xl shadow-card;
+    background-color: var(--color-card);
+    border-color: var(--color-border);
+    @apply rounded-xl shadow-card border transition-colors duration-200;
+  }
+  .theme-outdoor .card {
+    border-width: 2px;
+    border-color: #000000;
   }
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary;
