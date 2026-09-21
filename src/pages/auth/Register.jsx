@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { Mail, Lock, User, Phone, Ticket, ArrowRight } from 'lucide-react'
+import { Mail, Lock, User, Phone, Ticket, ArrowRight, CheckCircle2, Info } from 'lucide-react'
 import { toast } from 'sonner'
 import AuthLayout from '../../components/layouts/AuthLayout'
 import Input, { Select } from '../../components/ui/Input'
@@ -31,19 +31,30 @@ const schema = z
 export default function Register() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
+  const inviteFromUrl = params.get('invite') || ''
   const setAuth = useAuthStore((s) => s.setAuth)
-  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm({
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      firstName: '', lastName: '', email: '', phone: '',
-      role: params.get('invite') ? 'RESELLER' : 'CUSTOMER',
-      inviteCode: params.get('invite') || '',
-      password: '', confirm: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      role: inviteFromUrl ? 'RESELLER' : 'CUSTOMER',
+      inviteCode: inviteFromUrl,
+      password: '',
+      confirm: '',
     },
   })
 
   const role = watch('role')
-  const needsInvite = ['RESELLER', 'AGENT'].includes(role)
+  const needsInvite = ['RESELLER', 'AGENT'].includes(role) || Boolean(inviteFromUrl)
 
   const onSubmit = async (values) => {
     try {
@@ -59,6 +70,18 @@ export default function Register() {
 
   return (
     <AuthLayout title="Create your account" subtitle="Join DataHUB in under a minute.">
+      {inviteFromUrl && (
+        <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-primary/20 bg-primary-50 p-3.5 text-xs text-primary">
+          <Info size={18} className="shrink-0 mt-0.5" />
+          <div>
+            <p className="font-bold">Invited by Agent</p>
+            <p className="mt-0.5 text-slate-600">
+              You were invited by an agent. Your account will be linked automatically.
+            </p>
+          </div>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-2 gap-3">
           <Input label="First name" placeholder="Ama" icon={User} error={errors.firstName?.message} {...register('firstName')} />
@@ -67,14 +90,24 @@ export default function Register() {
         <Input label="Email address" type="email" placeholder="you@example.com" icon={Mail} error={errors.email?.message} {...register('email')} />
         <Input label="Phone number" placeholder="024 123 4567" icon={Phone} error={errors.phone?.message} {...register('phone')} />
 
-        <Select label="I am registering as" error={errors.role?.message} {...register('role')}>
+        <Select label="I am registering as" error={errors.role?.message} {...register('role')} disabled={Boolean(inviteFromUrl)}>
           <option value="CUSTOMER">Customer — buy data for myself</option>
           <option value="RESELLER">Reseller — sell data & earn (invite required)</option>
           <option value="AGENT">Agent — manage resellers (invite required)</option>
         </Select>
 
         {needsInvite && (
-          <Input label="Invite code" placeholder="AGT-XX-XXXX" icon={Ticket} error={errors.inviteCode?.message} {...register('inviteCode')} />
+          <div>
+            <Input
+              label="Invite code"
+              placeholder="AGT-XX-XXXX"
+              icon={Ticket}
+              readOnly={Boolean(inviteFromUrl)}
+              className={inviteFromUrl ? 'bg-slate-50 cursor-not-allowed font-mono font-bold' : ''}
+              error={errors.inviteCode?.message}
+              {...register('inviteCode')}
+            />
+          </div>
         )}
 
         <div className="grid grid-cols-2 gap-3">
