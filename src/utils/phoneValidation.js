@@ -10,7 +10,7 @@ export function isValidGhanaPhone(phone) {
 }
 
 export function normalizeGhanaPhone(phone) {
-  const cleaned = phone.replace(/[\s\-()]/g, '')
+  const cleaned = (phone || '').replace(/[\s\-()]/g, '')
   if (cleaned.startsWith('+233')) return '0' + cleaned.slice(4)
   if (cleaned.startsWith('233')) return '0' + cleaned.slice(3)
   return cleaned
@@ -25,3 +25,5 @@ export function guessNetwork(phone) {
   if (['027', '057', '026', '056'].includes(prefix)) return 'AT'
   return null
 }
+
+export const detectGhanaNetwork = guessNetwork
