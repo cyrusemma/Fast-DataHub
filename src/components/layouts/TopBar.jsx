@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
-import { Menu, Wallet, Plus, Bell, Sun, Moon, Zap, LogOut, ChevronDown } from 'lucide-react'
+import { Menu, Wallet, Plus, Bell, LogOut, ChevronDown } from 'lucide-react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useWallet } from '../../hooks/useWallet'
 import { useWalletStore } from '../../store/walletStore'
 import { useAuthStore } from '../../store/authStore'
 import { useRole } from '../../hooks/useRole'
-import { useThemeStore } from '../../store/themeStore'
+import ModeSwitcher from '../shared/ModeSwitcher'
 import { formatGHS } from '../../utils/formatCurrency'
 import { logout } from '../../api/auth.api'
 import { ROLE_LABELS } from '../../utils/constants'
@@ -45,7 +45,6 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
   const balance = useWalletStore((s) => s.balance)
   const { profile, clearAuth } = useAuthStore()
   const { role } = useRole()
-  const { mode, cycleMode } = useThemeStore()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
 
@@ -74,18 +73,6 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
     }
   }
 
-  const getModeIcon = () => {
-    if (mode === 'amoled') return <Zap size={17} className="text-primary fill-primary/20" />
-    if (mode === 'dark') return <Moon size={17} className="text-primary" />
-    return <Sun size={17} className="text-amber-500" />
-  }
-
-  const getModeLabel = () => {
-    if (mode === 'amoled') return 'AMOLED'
-    if (mode === 'dark') return 'Dark'
-    return 'Light'
-  }
-
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-surface/85 backdrop-blur-md transition-colors">
       <div className="flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
@@ -108,16 +95,8 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Quick Mode switcher */}
-          <button
-            type="button"
-            onClick={cycleMode}
-            className="flex items-center gap-1.5 rounded-xl border border-border bg-surface p-2 sm:px-3 sm:py-2 text-xs font-semibold text-text shadow-sm transition hover:border-primary/40 hover:bg-surface-raised"
-            title={`Current mode: ${getModeLabel()} (Click to cycle)`}
-          >
-            {getModeIcon()}
-            <span className="hidden md:inline capitalize">{getModeLabel()}</span>
-          </button>
+          {/* Segmented Mode Switcher */}
+          <ModeSwitcher variant="compact" />
 
           {/* Wallet Balance widget (for non-admin users) */}
           {!isAdmin && (
