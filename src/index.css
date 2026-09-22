@@ -2,108 +2,286 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════════════════════════════
+   LAYER 1 & 2: BASE MODES & PALETTE PRESETS (CSS VARIABLES)
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Light Base Mode ── */
 :root,
-.theme-light {
-  --color-bg: #f8faff;
-  --color-surface: #ffffff;
-  --color-surface-subtle: #f1f5f9;
-  --color-text: #0a0f1e;
-  --color-text-muted: #64748b;
-  --color-primary: #0066ff;
-  --color-primary-50: #ebf2ff;
-  --color-primary-100: #d6e5ff;
-  --color-primary-hover: #0052cc;
-  --color-border: #e2e8f0;
-  --color-border-subtle: #f1f5f9;
-  --color-card: #ffffff;
+[data-mode="light"] {
+  --color-bg: #F8FAFC;
+  --color-bg-subtle: #F1F5F9;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #FFFFFF;
+  --color-border: #E2E8F0;
+  --color-border-strong: #CBD5E1;
+  --color-text: #0F172A;
+  --color-text-muted: #475569;
+  --color-text-subtle: #94A3B8;
+
+  --color-primary-text: #FFFFFF;
+  --color-success: #16A34A;
+  --color-warning: #D97706;
+  --color-danger: #DC2626;
+  --color-info: #0891B2;
+  --color-success-bg: #F0FDF4;
+  --color-warning-bg: #FFFBEB;
+  --color-danger-bg: #FEF2F2;
+  --color-info-bg: #F0F9FF;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
-.theme-dark {
-  --color-bg: #0b0f19;
-  --color-surface: #111827;
-  --color-surface-subtle: #1f2937;
-  --color-text: #f9fafb;
-  --color-text-muted: #9ca3af;
-  --color-primary: #3b82f6;
-  --color-primary-50: rgba(59, 130, 246, 0.15);
-  --color-primary-100: rgba(59, 130, 246, 0.25);
-  --color-primary-hover: #2563eb;
-  --color-border: #1f2937;
-  --color-border-subtle: #182234;
-  --color-card: #111827;
+/* ── Dark Base Mode (OLED Slate #0B0F19) ── */
+[data-mode="dark"] {
+  --color-bg: #0B0F19;
+  --color-bg-subtle: #111827;
+  --color-surface: #1E2433;
+  --color-surface-raised: #252D3D;
+  --color-border: #2D3748;
+  --color-border-strong: #4A5568;
+  --color-text: #F1F5F9;
+  --color-text-muted: #94A3B8;
+  --color-text-subtle: #64748B;
+
+  --color-primary-text: #FFFFFF;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #06B6D4;
+  --color-success-bg: rgba(34, 197, 94, 0.12);
+  --color-warning-bg: rgba(245, 158, 11, 0.12);
+  --color-danger-bg: rgba(239, 68, 68, 0.12);
+  --color-info-bg: rgba(6, 182, 212, 0.12);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
-.theme-outdoor {
-  --color-bg: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-subtle: #f0f0f0;
-  --color-text: #000000;
-  --color-text-muted: #1a1a1a;
-  --color-primary: #0000ee;
-  --color-primary-50: #e0e0ff;
-  --color-primary-100: #c0c0ff;
-  --color-primary-hover: #0000cc;
-  --color-border: #000000;
-  --color-border-subtle: #000000;
-  --color-card: #ffffff;
+/* ── AMOLED Base Mode (Pure Black #000000) ── */
+[data-mode="amoled"] {
+  --color-bg: #000000;
+  --color-bg-subtle: #0A0A0A;
+  --color-surface: #111111;
+  --color-surface-raised: #1A1A1A;
+  --color-border: #222222;
+  --color-border-strong: #333333;
+  --color-text: #FFFFFF;
+  --color-text-muted: #A0A0A0;
+  --color-text-subtle: #555555;
+
+  --color-primary-text: #FFFFFF;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #06B6D4;
+  --color-success-bg: rgba(34, 197, 94, 0.08);
+  --color-warning-bg: rgba(245, 158, 11, 0.08);
+  --color-danger-bg: rgba(239, 68, 68, 0.08);
+  --color-info-bg: rgba(6, 182, 212, 0.08);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.8);
 }
 
+/* ── PALETTE 1: DEFAULT (DataHUB Brand Blue) ── */
+:root,
+[data-palette="default"] {
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-accent: #7C3AED;
+  --color-accent-hover: #6D28D9;
+}
+[data-mode="dark"][data-palette="default"],
+[data-mode="amoled"][data-palette="default"] {
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+  --color-accent: #8B5CF6;
+  --color-accent-hover: #7C3AED;
+}
+
+/* ── PALETTE 2: OCEAN (Teal / Cyan) ── */
+[data-palette="ocean"] {
+  --color-primary: #0891B2;
+  --color-primary-hover: #0E7490;
+  --color-accent: #0284C7;
+  --color-accent-hover: #0369A1;
+}
+[data-mode="dark"][data-palette="ocean"],
+[data-mode="amoled"][data-palette="ocean"] {
+  --color-primary: #06B6D4;
+  --color-primary-hover: #0891B2;
+  --color-accent: #38BDF8;
+  --color-accent-hover: #0284C7;
+}
+
+/* ── PALETTE 3: MIDNIGHT (Deep Purple) ── */
+[data-palette="midnight"] {
+  --color-primary: #7C3AED;
+  --color-primary-hover: #6D28D9;
+  --color-accent: #9333EA;
+  --color-accent-hover: #7E22CE;
+}
+[data-mode="dark"][data-palette="midnight"],
+[data-mode="amoled"][data-palette="midnight"] {
+  --color-primary: #8B5CF6;
+  --color-primary-hover: #7C3AED;
+  --color-accent: #A855F7;
+  --color-accent-hover: #9333EA;
+}
+
+/* ── PALETTE 4: EMBER (Warm Orange / Red) ── */
+[data-palette="ember"] {
+  --color-primary: #EA580C;
+  --color-primary-hover: #C2410C;
+  --color-accent: #D97706;
+  --color-accent-hover: #B45309;
+}
+[data-mode="dark"][data-palette="ember"],
+[data-mode="amoled"][data-palette="ember"] {
+  --color-primary: #F97316;
+  --color-primary-hover: #EA580C;
+  --color-accent: #F59E0B;
+  --color-accent-hover: #D97706;
+}
+
+/* ── PALETTE 5: FOREST (Emerald Green) ── */
+[data-palette="forest"] {
+  --color-primary: #16A34A;
+  --color-primary-hover: #15803D;
+  --color-accent: #059669;
+  --color-accent-hover: #047857;
+}
+[data-mode="dark"][data-palette="forest"],
+[data-mode="amoled"][data-palette="forest"] {
+  --color-primary: #22C55E;
+  --color-primary-hover: #16A34A;
+  --color-accent: #10B981;
+  --color-accent-hover: #059669;
+}
+
+/* ── PALETTE 6: GOLD (Amber / Yellow) ── */
+[data-palette="gold"] {
+  --color-primary: #D97706;
+  --color-primary-hover: #B45309;
+  --color-accent: #CA8A04;
+  --color-accent-hover: #A16207;
+}
+[data-mode="dark"][data-palette="gold"],
+[data-mode="amoled"][data-palette="gold"] {
+  --color-primary: #F59E0B;
+  --color-primary-hover: #D97706;
+  --color-accent: #EAB308;
+  --color-accent-hover: #CA8A04;
+}
+
+/* ══════════════════════════════════════════════════════════
+   GLOBAL TRANSITIONS
+   ══════════════════════════════════════════════════════════ */
+html, body, #root {
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+*, *::before, *::after {
+  transition: background-color 300ms ease, 
+              color 300ms ease, 
+              border-color 300ms ease,
+              box-shadow 300ms ease;
+}
+
+/* Disable transitions on media and isolated preview containers */
+img, video, svg, [data-no-transition], [data-no-transition] * {
+  transition: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BASE & INTERACTION STYLES
+   ══════════════════════════════════════════════════════════ */
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-sans);
   }
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    @apply font-body antialiased transition-colors duration-200;
+    min-height: 100vh;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display;
+    font-family: var(--font-sans);
+    color: var(--color-text);
   }
-  /* Custom scrollbar */
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #d6e0f0; border-radius: 9999px; border: 2px solid transparent; background-clip: content-box; }
-  ::-webkit-scrollbar-thumb:hover { background: #b9c7df; background-clip: content-box; }
+  ::-webkit-scrollbar-thumb { 
+    background: var(--color-border); 
+    border-radius: var(--radius-full); 
+  }
+  ::-webkit-scrollbar-thumb:hover { 
+    background: var(--color-border-strong); 
+  }
 }
 
 @layer components {
-  .skeleton {
-    @apply relative overflow-hidden bg-slate-200/70 rounded-md;
+  /* Cards */
+  .card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 200ms ease;
   }
-  .theme-dark .skeleton {
-    @apply bg-slate-800/80;
+  .card-interactive {
+    cursor: pointer;
+  }
+  .card-interactive:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--color-border-strong);
+  }
+
+  /* Focus ring utility */
+  .focus-ring {
+    outline: none;
+  }
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Shimmer skeleton */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-bg-subtle);
+    border-radius: var(--radius-md);
   }
   .skeleton::after {
     content: '';
-    @apply absolute inset-0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     transform: translateX(-100%);
     animation: shimmer 1.5s infinite;
   }
-  .theme-dark .skeleton::after {
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  }
-  .card {
-    background-color: var(--color-card);
-    border-color: var(--color-border);
-    @apply rounded-xl shadow-card border transition-colors duration-200;
-  }
-  .theme-outdoor .card {
-    border-width: 2px;
-    border-color: #000000;
-  }
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary;
-  }
-  /* Mesh gradient backdrop for auth + hero surfaces */
-  .mesh-bg {
-    background-color: #0a0f1e;
-    background-image:
-      radial-gradient(at 18% 22%, rgba(0, 102, 255, 0.55) 0px, transparent 50%),
-      radial-gradient(at 82% 12%, rgba(0, 196, 140, 0.35) 0px, transparent 45%),
-      radial-gradient(at 75% 85%, rgba(0, 102, 255, 0.4) 0px, transparent 50%),
-      radial-gradient(at 12% 90%, rgba(99, 102, 241, 0.35) 0px, transparent 45%);
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
   }
 }
