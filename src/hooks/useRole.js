@@ -8,6 +8,7 @@ const navItems = {
     { label: 'Agents', icon: 'UserCheck', path: '/admin/agents' },
     { label: 'Bundles', icon: 'Package', path: '/admin/bundles' },
     { label: 'Finance', icon: 'DollarSign', path: '/admin/finance' },
+    { label: 'Theme Studio', icon: 'Palette', path: '/admin/theme' },
     { label: 'Audit Logs', icon: 'ScrollText', path: '/admin/audit-logs' },
   ],
   NETWORK_ADMIN: [

@@ -30,6 +30,7 @@ import AdminAgents from './pages/admin/AdminAgents'
 import AdminBundles from './pages/admin/AdminBundles'
 import AdminFinance from './pages/admin/AdminFinance'
 import AdminAuditLogs from './pages/admin/AdminAuditLogs'
+import AdminThemeSettings from './pages/admin/AdminThemeSettings'
 import ErrorBoundary from './components/ErrorBoundary'
 
 const customerRoles = ['CUSTOMER']
@@ -81,6 +82,7 @@ export default function App() {
         <Route path="/admin/agents" element={<Guard roles={adminRoles}><AdminAgents /></Guard>} />
         <Route path="/admin/bundles" element={<Guard roles={adminRoles}><AdminBundles /></Guard>} />
         <Route path="/admin/finance" element={<Guard roles={adminRoles}><AdminFinance /></Guard>} />
+        <Route path="/admin/theme" element={<Guard roles={adminRoles}><AdminThemeSettings /></Guard>} />
         <Route path="/admin/audit-logs" element={<Guard roles={auditRoles}><AdminAuditLogs /></Guard>} />
       </Route>
 
