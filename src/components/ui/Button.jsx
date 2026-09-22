@@ -4,20 +4,22 @@ import { cn } from '../../utils/cn'
 
 const variants = {
   primary:
-    'bg-primary text-white hover:bg-primary-600 active:bg-primary-700 shadow-sm shadow-primary/30 disabled:bg-primary/50',
+    'bg-[var(--color-primary)] text-[var(--color-primary-text)] hover:bg-[var(--color-primary-hover)] hover:-translate-y-px active:translate-y-0 shadow-sm disabled:opacity-50 disabled:hover:translate-y-0',
   secondary:
-    'bg-white text-dark border border-slate-200 hover:border-slate-300 hover:bg-slate-50 disabled:opacity-60',
-  ghost: 'bg-transparent text-slate-600 hover:bg-slate-100 disabled:opacity-50',
-  danger: 'bg-danger text-white hover:bg-red-600 shadow-sm shadow-danger/30 disabled:opacity-60',
-  success: 'bg-success text-white hover:bg-emerald-500 shadow-sm shadow-success/30 disabled:opacity-60',
-  dark: 'bg-dark text-white hover:bg-slate-800 disabled:opacity-60',
+    'bg-[var(--color-surface)] text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-bg-subtle)] hover:border-[var(--color-border-strong)] disabled:opacity-50',
+  ghost:
+    'bg-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text)] disabled:opacity-50',
+  danger:
+    'bg-[var(--color-danger)] text-white hover:opacity-90 hover:-translate-y-px active:translate-y-0 shadow-sm disabled:opacity-50 disabled:hover:translate-y-0',
+  success:
+    'bg-[var(--color-success)] text-white hover:opacity-90 hover:-translate-y-px active:translate-y-0 shadow-sm disabled:opacity-50 disabled:hover:translate-y-0',
 }
 
 const sizes = {
-  sm: 'h-9 px-3.5 text-sm rounded-lg gap-1.5',
-  md: 'h-11 px-5 text-sm rounded-xl gap-2',
-  lg: 'h-12 px-6 text-base rounded-xl gap-2',
-  icon: 'h-10 w-10 rounded-xl',
+  sm: 'h-8 px-3 text-xs rounded-[var(--radius-md)] gap-1.5',
+  md: 'h-10 px-4 text-sm rounded-[var(--radius-md)] gap-2',
+  lg: 'h-12 px-6 text-base rounded-[var(--radius-md)] gap-2.5',
+  icon: 'h-10 w-10 rounded-[var(--radius-md)]',
 }
 
 const Button = forwardRef(function Button(
@@ -29,9 +31,10 @@ const Button = forwardRef(function Button(
       ref={ref}
       disabled={disabled || loading}
       className={cn(
-        'inline-flex items-center justify-center font-semibold font-display transition-all duration-150',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-1',
-        'disabled:cursor-not-allowed select-none active:scale-[0.98]',
+        'inline-flex items-center justify-center font-medium font-sans select-none',
+        'transition-all duration-150 ease-out',
+        'focus:outline-none focus-visible:outline-2 focus-visible:outline-[var(--color-primary)] focus-visible:outline-offset-2',
+        'disabled:cursor-not-allowed',
         variants[variant],
         sizes[size],
         className
@@ -39,12 +42,12 @@ const Button = forwardRef(function Button(
       {...props}
     >
       {loading ? (
-        <Loader2 size={size === 'lg' ? 20 : 18} className="animate-spin" />
+        <Loader2 size={size === 'lg' ? 18 : 16} className="animate-spin" />
       ) : (
-        Icon && <Icon size={size === 'sm' ? 16 : 18} />
+        Icon && <Icon size={size === 'sm' ? 14 : 16} />
       )}
       {children}
-      {!loading && IconRight && <IconRight size={size === 'sm' ? 16 : 18} />}
+      {!loading && IconRight && <IconRight size={size === 'sm' ? 14 : 16} />}
     </button>
   )
 })

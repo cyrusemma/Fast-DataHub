@@ -64,13 +64,13 @@ export default function TopUpPanel({ onTopupSuccess }) {
   return (
     <div className="card p-5">
       <div className="flex items-center justify-between">
-        <h2 className="font-display text-base font-bold text-dark">Top up wallet</h2>
-        <span className="inline-flex items-center gap-1 rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-semibold text-primary">
+        <h2 className="font-display text-base font-bold text-text">Top up wallet</h2>
+        <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-2.5 py-0.5 text-xs font-semibold text-primary">
           <Sparkles size={12} /> Instant credit
         </span>
       </div>
 
-      <p className="mt-1 text-xs text-slate-500">
+      <p className="mt-1 text-xs text-text-muted">
         Choose a preset amount or enter a custom value in GHS.
       </p>
 
@@ -86,7 +86,7 @@ export default function TopUpPanel({ onTopupSuccess }) {
               className={`rounded-xl border px-3 py-2.5 text-center text-xs sm:text-sm font-bold transition ${
                 isSelected
                   ? 'border-primary bg-primary text-white shadow-sm shadow-primary/20'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-primary/40 hover:bg-slate-50'
+                  : 'border-border bg-surface-raised text-text hover:border-primary/40 hover:bg-surface'
               }`}
             >
               GHS {pesewasToGHS(preset)}
@@ -121,7 +121,7 @@ export default function TopUpPanel({ onTopupSuccess }) {
         </Button>
       </div>
 
-      <p className="mt-3 text-center text-[11px] text-slate-400">
+      <p className="mt-3 text-center text-[11px] text-text-muted">
         Secured by Paystack. Supports MTN MoMo, Telecel Cash, AT Money, & Cards.
       </p>
     </div>

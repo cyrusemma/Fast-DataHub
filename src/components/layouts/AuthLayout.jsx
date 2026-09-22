@@ -9,7 +9,7 @@ const features = [
 
 export default function AuthLayout({ children, title, subtitle }) {
   return (
-    <div className="flex min-h-screen bg-surface">
+    <div className="flex min-h-screen bg-bg">
       {/* Brand / marketing panel */}
       <div className="mesh-bg relative hidden w-1/2 flex-col justify-between overflow-hidden p-12 lg:flex">
         <div className="relative z-10 flex items-center gap-2.5">
@@ -58,18 +58,18 @@ export default function AuthLayout({ children, title, subtitle }) {
       </div>
 
       {/* Form panel */}
-      <div className="flex w-full flex-col justify-center px-6 py-10 sm:px-12 lg:w-1/2">
+      <div className="flex w-full flex-col justify-center bg-surface px-6 py-10 sm:px-12 lg:w-1/2">
         <div className="mx-auto w-full max-w-md">
           <div className="mb-8 flex items-center gap-2.5 lg:hidden">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white">
               <span className="font-display text-lg font-extrabold">D</span>
             </div>
-            <span className="font-display text-lg font-bold text-dark">DataHUB</span>
+            <span className="font-display text-lg font-bold text-text">DataHUB</span>
           </div>
 
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-            <h2 className="font-display text-2xl font-extrabold text-dark">{title}</h2>
-            {subtitle && <p className="mt-1.5 text-sm text-slate-500">{subtitle}</p>}
+            <h2 className="font-display text-2xl font-extrabold text-text">{title}</h2>
+            {subtitle && <p className="mt-1.5 text-sm text-text-muted">{subtitle}</p>}
             <div className="mt-7">{children}</div>
           </motion.div>
         </div>

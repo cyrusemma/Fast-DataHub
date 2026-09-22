@@ -1,7 +1,7 @@
 import { cn } from '../../utils/cn'
 
 export default function Skeleton({ className }) {
-  return <div className={cn('skeleton h-4 w-full', className)} />
+  return <div className={cn('skeleton h-4 w-full rounded-md', className)} />
 }
 
 export function SkeletonCard() {
@@ -16,7 +16,7 @@ export function SkeletonCard() {
 
 export function SkeletonRows({ rows = 5, cols = 4 }) {
   return (
-    <div className="divide-y divide-slate-100">
+    <div className="divide-y divide-border">
       {Array.from({ length: rows }).map((_, i) => (
         <div key={i} className="flex items-center gap-4 px-5 py-4">
           {Array.from({ length: cols }).map((_, j) => (

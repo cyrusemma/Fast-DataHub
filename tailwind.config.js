@@ -4,21 +4,70 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: { DEFAULT: '#0066FF', 50: '#EBF2FF', 100: '#D6E5FF', 600: '#0052CC', 700: '#003D99' },
-        success: { DEFAULT: '#00C48C', light: '#E6FAF5' },
-        warning: { DEFAULT: '#FFB300', light: '#FFF8E6' },
-        danger: { DEFAULT: '#FF4444', light: '#FFE8E8' },
-        surface: '#F8FAFF',
-        dark: '#0A0F1E',
+        bg: {
+          DEFAULT: 'var(--color-bg)',
+          subtle: 'var(--color-bg-subtle)',
+        },
+        surface: {
+          DEFAULT: 'var(--color-surface)',
+          raised: 'var(--color-surface-raised)',
+        },
+        border: {
+          DEFAULT: 'var(--color-border)',
+          strong: 'var(--color-border-strong)',
+        },
+        text: {
+          DEFAULT: 'var(--color-text)',
+          muted: 'var(--color-text-muted)',
+          subtle: 'var(--color-text-subtle)',
+        },
+        primary: {
+          DEFAULT: 'var(--color-primary)',
+          hover: 'var(--color-primary-hover)',
+          text: 'var(--color-primary-text)',
+          50: 'var(--color-info-bg)',
+          100: 'var(--color-info-bg)',
+          600: 'var(--color-primary-hover)',
+          700: 'var(--color-primary-hover)',
+        },
+        accent: {
+          DEFAULT: 'var(--color-accent)',
+          hover: 'var(--color-accent-hover)',
+        },
+        success: {
+          DEFAULT: 'var(--color-success)',
+          bg: 'var(--color-success-bg)',
+          light: 'var(--color-success-bg)',
+        },
+        warning: {
+          DEFAULT: 'var(--color-warning)',
+          bg: 'var(--color-warning-bg)',
+          light: 'var(--color-warning-bg)',
+        },
+        danger: {
+          DEFAULT: 'var(--color-danger)',
+          bg: 'var(--color-danger-bg)',
+          light: 'var(--color-danger-bg)',
+        },
+        info: {
+          DEFAULT: 'var(--color-info)',
+          bg: 'var(--color-info-bg)',
+          light: 'var(--color-info-bg)',
+        },
+        dark: 'var(--color-text)',
       },
       fontFamily: {
-        display: ['Plus Jakarta Sans', 'sans-serif'],
-        body: ['DM Sans', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        display: ['Inter', 'system-ui', 'sans-serif'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        card: '0 1px 3px rgba(10, 15, 30, 0.06), 0 1px 2px rgba(10, 15, 30, 0.04)',
-        'card-hover': '0 10px 30px -10px rgba(0, 102, 255, 0.18)',
-        glow: '0 0 0 4px rgba(0, 102, 255, 0.12)',
+        sm: 'var(--shadow-sm)',
+        card: 'var(--shadow-sm)',
+        'card-hover': 'var(--shadow-md)',
+        md: 'var(--shadow-md)',
+        lg: 'var(--shadow-lg)',
       },
       keyframes: {
         'fade-in': { '0%': { opacity: '0' }, '100%': { opacity: '1' } },

@@ -13,27 +13,29 @@ const Input = forwardRef(function Input(
   return (
     <div className={cn('w-full', containerClassName)}>
       {label && (
-        <label className="mb-1.5 block text-sm font-medium text-slate-700">{label}</label>
+        <label className="mb-1.5 block text-xs font-semibold text-[var(--color-text)]">
+          {label}
+        </label>
       )}
       <div className="relative">
         {Icon && (
           <Icon
-            size={18}
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+            size={16}
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-subtle)]"
           />
         )}
         <input
           ref={ref}
           type={inputType}
           className={cn(
-            'w-full rounded-xl border bg-white text-dark placeholder:text-slate-400 transition-all',
-            'h-11 text-sm',
-            Icon ? 'pl-10' : 'pl-3.5',
-            isPassword ? 'pr-11' : 'pr-3.5',
-            'focus:outline-none focus:ring-2',
+            'w-full rounded-[var(--radius-md)] border bg-[var(--color-bg-subtle)] text-[var(--color-text)] placeholder:text-[var(--color-text-subtle)] font-sans',
+            'h-10 text-sm transition-all duration-150 ease-out',
+            Icon ? 'pl-9' : 'pl-3.5',
+            isPassword ? 'pr-10' : 'pr-3.5',
+            'focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20',
             error
-              ? 'border-danger/60 focus:border-danger focus:ring-danger/20'
-              : 'border-slate-200 focus:border-primary focus:ring-primary/20',
+              ? 'border-[var(--color-danger)] focus:border-[var(--color-danger)] focus:ring-[var(--color-danger)]/20'
+              : 'border-[var(--color-border)]',
             className
           )}
           {...props}
@@ -43,16 +45,16 @@ const Input = forwardRef(function Input(
             type="button"
             onClick={() => setShow((s) => !s)}
             tabIndex={-1}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
           >
-            {show ? <EyeOff size={18} /> : <Eye size={18} />}
+            {show ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         )}
       </div>
       {error ? (
-        <p className="mt-1.5 text-xs font-medium text-danger">{error}</p>
+        <p className="mt-1 text-xs font-medium text-[var(--color-danger)]">{error}</p>
       ) : hint ? (
-        <p className="mt-1.5 text-xs text-slate-400">{hint}</p>
+        <p className="mt-1 text-xs text-[var(--color-text-subtle)]">{hint}</p>
       ) : null}
     </div>
   )
@@ -66,20 +68,26 @@ export const Select = forwardRef(function Select(
 ) {
   return (
     <div className={cn('w-full', containerClassName)}>
-      {label && <label className="mb-1.5 block text-sm font-medium text-slate-700">{label}</label>}
+      {label && (
+        <label className="mb-1.5 block text-xs font-semibold text-[var(--color-text)]">
+          {label}
+        </label>
+      )}
       <select
         ref={ref}
         className={cn(
-          'h-11 w-full rounded-xl border bg-white px-3.5 text-sm text-dark transition-all',
-          'focus:outline-none focus:ring-2',
-          error ? 'border-danger/60 focus:ring-danger/20' : 'border-slate-200 focus:border-primary focus:ring-primary/20',
+          'h-10 w-full rounded-[var(--radius-md)] border bg-[var(--color-bg-subtle)] px-3.5 text-sm text-[var(--color-text)] font-sans transition-all duration-150 ease-out',
+          'focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20',
+          error
+            ? 'border-[var(--color-danger)] focus:ring-[var(--color-danger)]/20'
+            : 'border-[var(--color-border)]',
           className
         )}
         {...props}
       >
         {children}
       </select>
-      {error && <p className="mt-1.5 text-xs font-medium text-danger">{error}</p>}
+      {error && <p className="mt-1 text-xs font-medium text-[var(--color-danger)]">{error}</p>}
     </div>
   )
 })

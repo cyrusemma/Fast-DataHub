@@ -83,12 +83,12 @@ export default function QuickReUp() {
     <div className="card p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-warning/15 text-warning">
             <Zap size={18} />
           </div>
           <div>
-            <h2 className="font-display text-base font-bold text-dark">1-Tap Quick Re-Up</h2>
-            <p className="text-xs text-slate-500">Your most frequent bundle recipients</p>
+            <h2 className="font-display text-base font-bold text-text">1-Tap Quick Re-Up</h2>
+            <p className="text-xs text-text-muted">Your most frequent bundle recipients</p>
           </div>
         </div>
       </div>
@@ -105,30 +105,30 @@ export default function QuickReUp() {
             {topReups.map((item) => (
               <div
                 key={item.key}
-                className="flex flex-col justify-between rounded-xl border border-slate-100 bg-white p-4 shadow-sm hover:border-primary/40 hover:shadow-card transition"
+                className="flex flex-col justify-between rounded-xl border border-border bg-surface-raised p-4 shadow-sm hover:border-primary/40 hover:shadow-card transition"
               >
                 <div>
                   <div className="flex items-center justify-between">
                     <NetworkBadge network={item.network} />
-                    <span className="text-[11px] font-semibold text-slate-400">
+                    <span className="text-[11px] font-semibold text-text-muted">
                       Ordered {item.count}×
                     </span>
                   </div>
 
-                  <p className="mt-2.5 font-display text-sm font-bold text-dark truncate">
+                  <p className="mt-2.5 font-display text-sm font-bold text-text truncate">
                     {item.bundleName}
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-text-muted">
                     {formatDataSize(item.dataSizeMb)}
                   </p>
 
-                  <div className="mt-3 flex items-center gap-1.5 font-mono text-xs font-semibold text-slate-700 bg-slate-50 rounded-lg px-2.5 py-1.5">
-                    <Phone size={13} className="text-slate-400" />
+                  <div className="mt-3 flex items-center gap-1.5 font-mono text-xs font-semibold text-text bg-surface rounded-lg px-2.5 py-1.5 border border-border">
+                    <Phone size={13} className="text-text-muted" />
                     <span>{item.recipientPhone}</span>
                   </div>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between pt-2 border-t border-slate-50">
+                <div className="mt-4 flex items-center justify-between pt-2 border-t border-border">
                   <span className="font-display text-sm font-extrabold text-primary">
                     {formatGHS(item.lastPrice)}
                   </span>
@@ -170,20 +170,20 @@ export default function QuickReUp() {
         }
       >
         <div className="space-y-3 text-sm">
-          <p className="flex justify-between border-b border-slate-100 pb-2">
-            <span className="text-slate-500">Bundle</span>
-            <span className="font-bold text-dark">{selectedItem?.bundleName}</span>
+          <p className="flex justify-between border-b border-border pb-2">
+            <span className="text-text-muted">Bundle</span>
+            <span className="font-bold text-text">{selectedItem?.bundleName}</span>
           </p>
-          <p className="flex justify-between border-b border-slate-100 pb-2">
-            <span className="text-slate-500">Recipient Phone</span>
-            <span className="font-mono font-bold text-dark">{selectedItem?.recipientPhone}</span>
+          <p className="flex justify-between border-b border-border pb-2">
+            <span className="text-text-muted">Recipient Phone</span>
+            <span className="font-mono font-bold text-text">{selectedItem?.recipientPhone}</span>
           </p>
-          <p className="flex justify-between border-b border-slate-100 pb-2">
-            <span className="text-slate-500">Network</span>
-            <span className="font-bold text-dark">{selectedItem?.network}</span>
+          <p className="flex justify-between border-b border-border pb-2">
+            <span className="text-text-muted">Network</span>
+            <span className="font-bold text-text">{selectedItem?.network}</span>
           </p>
           <p className="flex justify-between pt-1">
-            <span className="text-slate-500">Amount Charged</span>
+            <span className="text-text-muted">Amount Charged</span>
             <span className="font-display font-black text-primary text-base">
               {formatGHS(selectedItem?.lastPrice)}
             </span>

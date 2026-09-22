@@ -31,37 +31,37 @@ export default function Modal({ open, onClose, title, subtitle, children, size =
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => closeable && onClose?.()}
-            className="absolute inset-0 bg-dark/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
           <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+            initial={{ opacity: 0, y: 8, scale: 0.99 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.98 }}
-            transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+            exit={{ opacity: 0, y: 8, scale: 0.99 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
             className={cn(
-              'relative w-full bg-white shadow-2xl',
-              'rounded-t-2xl sm:rounded-2xl',
+              'relative w-full bg-[var(--color-surface-raised)] border border-[var(--color-border)] shadow-2xl font-sans',
+              'rounded-t-[var(--radius-xl)] sm:rounded-[var(--radius-xl)]',
               sizes[size]
             )}
           >
             {(title || closeable) && (
-              <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-4">
+              <div className="flex items-start justify-between gap-4 border-b border-[var(--color-border)] px-6 py-4">
                 <div>
-                  {title && <h3 className="font-display text-lg font-bold text-dark">{title}</h3>}
-                  {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
+                  {title && <h3 className="font-display text-base font-bold text-[var(--color-text)]">{title}</h3>}
+                  {subtitle && <p className="mt-0.5 text-xs text-[var(--color-text-muted)]">{subtitle}</p>}
                 </div>
                 {closeable && (
                   <button
                     onClick={onClose}
-                    className="-mr-1.5 rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                    className="-mr-1.5 rounded-lg p-1.5 text-[var(--color-text-subtle)] transition hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text)]"
                   >
-                    <X size={20} />
+                    <X size={18} />
                   </button>
                 )}
               </div>
             )}
             <div className="px-6 py-5">{children}</div>
-            {footer && <div className="flex justify-end gap-3 border-t border-slate-100 px-6 py-4">{footer}</div>}
+            {footer && <div className="flex justify-end gap-3 border-t border-[var(--color-border)] px-6 py-4">{footer}</div>}
           </motion.div>
         </div>
       )}

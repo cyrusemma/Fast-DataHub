@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Menu, Wallet, Plus, Bell, Sun, Moon, SunMedium, LogOut, ChevronDown, User } from 'lucide-react'
+import { Menu, Wallet, Plus, Bell, Sun, Moon, Zap, LogOut, ChevronDown } from 'lucide-react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useWallet } from '../../hooks/useWallet'
 import { useWalletStore } from '../../store/walletStore'
@@ -21,6 +21,7 @@ const ROUTE_TITLES = {
   '/agent/resellers': 'My Resellers',
   '/agent/commissions': 'Commissions',
   '/agent/wallet': 'Agent Wallet',
+  '/agent/theme': 'Brand & Theme Settings',
   '/reseller': 'Reseller Dashboard',
   '/reseller/sell': 'Sell Data',
   '/reseller/earnings': 'Sales & Margins',
@@ -32,6 +33,7 @@ const ROUTE_TITLES = {
   '/admin/bundles': 'Bundle Management',
   '/admin/finance': 'Financial Overview',
   '/admin/audit-logs': 'Audit Logs',
+  '/admin/theme': 'Platform Theme Settings',
 }
 
 const WALLET_PATH = { AGENT: '/agent/wallet', RESELLER: '/reseller/wallet', CUSTOMER: '/wallet' }
@@ -43,7 +45,7 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
   const balance = useWalletStore((s) => s.balance)
   const { profile, clearAuth } = useAuthStore()
   const { role } = useRole()
-  const { theme, cycleTheme } = useThemeStore()
+  const { mode, cycleMode } = useThemeStore()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
 
@@ -72,56 +74,56 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
     }
   }
 
-  const getThemeIcon = () => {
-    if (theme === 'dark') return <Moon size={18} className="text-blue-400" />
-    if (theme === 'outdoor') return <SunMedium size={18} className="text-amber-500 font-bold" />
-    return <Sun size={18} className="text-amber-500" />
+  const getModeIcon = () => {
+    if (mode === 'amoled') return <Zap size={17} className="text-primary fill-primary/20" />
+    if (mode === 'dark') return <Moon size={17} className="text-primary" />
+    return <Sun size={17} className="text-amber-500" />
   }
 
-  const getThemeLabel = () => {
-    if (theme === 'dark') return 'Dark'
-    if (theme === 'outdoor') return 'Outdoor'
+  const getModeLabel = () => {
+    if (mode === 'amoled') return 'AMOLED'
+    if (mode === 'dark') return 'Dark'
     return 'Light'
   }
 
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-surface/85 backdrop-blur-md transition-colors">
+    <header className="sticky top-0 z-30 border-b border-border bg-surface/85 backdrop-blur-md transition-colors">
       <div className="flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
         <div className="flex items-center gap-3 min-w-0">
           <button
             onClick={onMenuClick}
-            className="rounded-lg p-2 text-slate-500 hover:bg-white hover:text-dark lg:hidden transition"
+            className="rounded-lg p-2 text-text-muted hover:bg-surface-raised hover:text-text lg:hidden transition"
             aria-label="Open navigation menu"
           >
             <Menu size={22} />
           </button>
           <div className="truncate">
-            <h1 className="font-display text-base sm:text-lg font-bold text-dark truncate">
+            <h1 className="font-display text-base sm:text-lg font-bold text-text truncate">
               {currentTitle}
             </h1>
-            <p className="hidden text-xs text-slate-400 sm:block">
+            <p className="hidden text-xs text-text-muted sm:block">
               {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Theme switcher */}
+          {/* Quick Mode switcher */}
           <button
             type="button"
-            onClick={cycleTheme}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white p-2 sm:px-3 sm:py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-primary/40 hover:bg-slate-50"
-            title={`Current theme: ${getThemeLabel()} (Click to cycle)`}
+            onClick={cycleMode}
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-surface p-2 sm:px-3 sm:py-2 text-xs font-semibold text-text shadow-sm transition hover:border-primary/40 hover:bg-surface-raised"
+            title={`Current mode: ${getModeLabel()} (Click to cycle)`}
           >
-            {getThemeIcon()}
-            <span className="hidden md:inline capitalize">{getThemeLabel()}</span>
+            {getModeIcon()}
+            <span className="hidden md:inline capitalize">{getModeLabel()}</span>
           </button>
 
           {/* Wallet Balance widget (for non-admin users) */}
           {!isAdmin && (
-            <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white py-1.5 pl-3 pr-1.5 shadow-sm">
+            <div className="flex items-center gap-2 rounded-xl border border-border bg-surface py-1.5 pl-3 pr-1.5 shadow-sm">
               <Wallet size={16} className="text-primary" />
-              <span className="font-display text-xs sm:text-sm font-bold text-dark tabular-nums">
+              <span className="font-display text-xs sm:text-sm font-bold text-text tabular-nums">
                 {isLoading ? '—' : formatGHS(balance)}
               </span>
               {walletPath && (
@@ -129,7 +131,7 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
                   type="button"
                   onClick={() => navigate(walletPath)}
                   title="Top up wallet"
-                  className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-white transition hover:bg-primary-600 shadow-sm"
+                  className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-white transition hover:brightness-110 shadow-sm"
                 >
                   <Plus size={15} />
                 </button>
@@ -140,11 +142,11 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
           {/* Notification bell */}
           <button
             type="button"
-            className="relative rounded-xl border border-slate-200 bg-white p-2.5 text-slate-500 shadow-sm transition hover:text-dark"
+            className="relative rounded-xl border border-border bg-surface p-2.5 text-text-muted shadow-sm transition hover:text-text hover:bg-surface-raised"
             title="Notifications"
           >
             <Bell size={18} />
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-danger ring-2 ring-white" />
+            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-danger ring-2 ring-surface" />
           </button>
 
           {/* User profile dropdown */}
@@ -152,32 +154,32 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
             <button
               type="button"
               onClick={() => setDropdownOpen((prev) => !prev)}
-              className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-1.5 sm:pr-2.5 shadow-sm transition hover:border-slate-300"
+              className="flex items-center gap-2 rounded-xl border border-border bg-surface p-1.5 sm:pr-2.5 shadow-sm transition hover:border-primary/40"
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-emerald-500 font-display text-xs font-bold text-white shadow-sm">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent font-display text-xs font-bold text-white shadow-sm">
                 {profile?.first_name?.[0] || 'U'}
                 {profile?.last_name?.[0] || ''}
               </div>
               <div className="hidden text-left lg:block">
-                <p className="text-xs font-bold text-dark leading-tight">
+                <p className="text-xs font-bold text-text leading-tight">
                   {profile?.first_name} {profile?.last_name}
                 </p>
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
                   {ROLE_LABELS[role] || role}
                 </p>
               </div>
-              <ChevronDown size={14} className="hidden sm:block text-slate-400" />
+              <ChevronDown size={14} className="hidden sm:block text-text-muted" />
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl animate-fade-in z-50">
-                <div className="border-b border-slate-100 px-3 py-2.5">
-                  <p className="font-display text-sm font-bold text-dark">
+              <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-border bg-surface p-2 shadow-xl animate-fade-in z-50">
+                <div className="border-b border-border px-3 py-2.5">
+                  <p className="font-display text-sm font-bold text-text">
                     {profile?.first_name} {profile?.last_name}
                   </p>
-                  <p className="text-xs text-slate-500 truncate">{profile?.email}</p>
+                  <p className="text-xs text-text-muted truncate">{profile?.email}</p>
                   <div className="mt-2">
-                    <span className="inline-flex rounded-full bg-primary-50 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                    <span className="inline-flex rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-[11px] font-semibold text-primary">
                       {ROLE_LABELS[role] || role}
                     </span>
                   </div>
@@ -188,7 +190,7 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
                     <Link
                       to={walletPath}
                       onClick={() => setDropdownOpen(false)}
-                      className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition"
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-text hover:bg-surface-raised transition"
                     >
                       <Wallet size={15} className="text-primary" />
                       <span>Wallet ({formatGHS(balance)})</span>
@@ -197,7 +199,7 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
                   <button
                     type="button"
                     onClick={handleSignOut}
-                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-danger hover:bg-danger-light transition"
+                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-danger hover:bg-danger/10 transition"
                   >
                     <LogOut size={15} />
                     <span>Sign out</span>

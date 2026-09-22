@@ -10,8 +10,8 @@ export default function NetworkSelector({ value, onChange }) {
           type="button"
           onClick={() => onChange(network.id)}
           className={cn(
-            'h-20 rounded-xl border bg-white p-3 text-left shadow-card transition',
-            value === network.id ? 'border-primary ring-2 ring-primary/20' : 'border-slate-100 hover:border-primary/40'
+            'h-20 rounded-xl border bg-surface p-3 text-left shadow-card transition',
+            value === network.id ? 'border-primary ring-2 ring-primary/20' : 'border-border hover:border-primary/40'
           )}
         >
           <span
@@ -20,7 +20,7 @@ export default function NetworkSelector({ value, onChange }) {
           >
             {network.label}
           </span>
-          <span className="block text-xs font-medium text-slate-500">Browse bundles</span>
+          <span className="block text-xs font-medium text-text-muted">Browse bundles</span>
         </button>
       ))}
     </div>

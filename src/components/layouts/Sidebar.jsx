@@ -23,7 +23,7 @@ function NavItems({ onNavigate }) {
             className={({ isActive }) =>
               cn(
                 'group relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors',
-                isActive ? 'text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                isActive ? 'text-primary font-semibold' : 'text-text-muted hover:bg-surface-raised hover:text-text'
               )
             }
           >
@@ -32,12 +32,12 @@ function NavItems({ onNavigate }) {
                 {isActive && (
                   <motion.span
                     layoutId="sidebar-active"
-                    className="absolute inset-0 -z-0 rounded-xl bg-primary shadow-lg shadow-primary/30"
+                    className="absolute inset-0 -z-0 rounded-xl bg-primary/10 border border-primary/20 shadow-sm"
                     transition={{ type: 'spring', damping: 24, stiffness: 320 }}
                   />
                 )}
                 <span className="relative z-10 flex items-center gap-3">
-                  {Icon && <Icon size={19} />}
+                  {Icon && <Icon size={19} className={isActive ? 'text-primary' : 'text-text-muted group-hover:text-text'} />}
                   {item.label}
                 </span>
               </>
@@ -59,32 +59,36 @@ function SidebarInner({ onNavigate }) {
   }
 
   return (
-    <div className="flex h-full flex-col bg-dark py-6">
+    <div className="flex h-full flex-col border-r border-border bg-surface py-6">
       <div className="flex items-center justify-between px-6 pb-8">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
             <span className="font-display text-lg font-extrabold">D</span>
           </div>
-          <span className="font-display text-lg font-bold text-white">DataHUB</span>
+          <span className="font-display text-lg font-bold text-text">DataHUB</span>
         </div>
       </div>
 
       <NavItems onNavigate={onNavigate} />
 
       <div className="mt-4 px-3">
-        <div className="rounded-xl bg-white/5 p-3">
+        <div className="rounded-xl border border-border bg-surface-raised p-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-success font-display text-sm font-bold text-white">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent font-display text-sm font-bold text-white shadow-sm">
               {profile?.first_name?.[0]}
               {profile?.last_name?.[0]}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-white">
+              <p className="truncate text-sm font-semibold text-text">
                 {profile?.first_name} {profile?.last_name}
               </p>
-              <p className="truncate text-xs text-slate-400">{ROLE_LABELS[role]}</p>
+              <p className="truncate text-xs text-text-muted">{ROLE_LABELS[role]}</p>
             </div>
-            <button onClick={handleLogout} title="Sign out" className="rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-danger">
+            <button
+              onClick={handleLogout}
+              title="Sign out"
+              className="rounded-lg p-2 text-text-muted transition hover:bg-danger/10 hover:text-danger"
+            >
               <LogOut size={18} />
             </button>
           </div>
@@ -111,7 +115,7 @@ export default function Sidebar({ mobileOpen, onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             onClick={onClose}
-            className="absolute inset-0 bg-dark/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
           <motion.div
             initial={{ x: -280 }}
@@ -120,7 +124,10 @@ export default function Sidebar({ mobileOpen, onClose }) {
             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
             className="absolute left-0 top-0 h-full w-64"
           >
-            <button onClick={onClose} className="absolute right-3 top-5 z-20 rounded-lg p-1.5 text-slate-400 hover:text-white">
+            <button
+              onClick={onClose}
+              className="absolute right-3 top-5 z-20 rounded-lg p-1.5 text-text-muted hover:text-text"
+            >
               <X size={20} />
             </button>
             <SidebarInner onNavigate={onClose} />
