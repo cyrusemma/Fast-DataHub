@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAuthListener } from './hooks/useAuth'
+import { useThemeInit } from './hooks/useThemeInit'
 import { FullPageSpinner } from './components/ui/Spinner'
 import DashboardLayout from './components/layouts/DashboardLayout'
 import { ProtectedRoute } from './router/ProtectedRoute'
@@ -42,6 +43,8 @@ function Guard({ roles, children }) {
 
 export default function App() {
   const { ready } = useAuthListener()
+  useThemeInit()
+
   if (!ready) return <FullPageSpinner label="Preparing DataHUB..." />
 
   return (
