@@ -25,6 +25,7 @@ const navItems = {
     { label: 'Buy Bulk', icon: 'ShoppingCart', path: '/agent/buy-bulk' },
     { label: 'My Resellers', icon: 'Users', path: '/agent/resellers' },
     { label: 'Commissions', icon: 'Banknote', path: '/agent/commissions' },
+    { label: 'Brand & Theme', icon: 'Palette', path: '/agent/theme' },
     { label: 'Wallet', icon: 'Wallet', path: '/agent/wallet' },
   ],
   RESELLER: [

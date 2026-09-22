@@ -18,6 +18,7 @@ import AgentBuyBulk from './pages/agent/AgentBuyBulk'
 import AgentResellers from './pages/agent/AgentResellers'
 import AgentCommissions from './pages/agent/AgentCommissions'
 import AgentWallet from './pages/agent/AgentWallet'
+import AgentThemeSettings from './pages/agent/AgentThemeSettings'
 import ResellerDashboard from './pages/reseller/ResellerDashboard'
 import ResellerSellData from './pages/reseller/ResellerSellData'
 import ResellerEarnings from './pages/reseller/ResellerEarnings'
@@ -66,6 +67,7 @@ export default function App() {
         <Route path="/agent/buy-bulk" element={<Guard roles={agentRoles}><AgentBuyBulk /></Guard>} />
         <Route path="/agent/resellers" element={<Guard roles={agentRoles}><AgentResellers /></Guard>} />
         <Route path="/agent/commissions" element={<Guard roles={agentRoles}><AgentCommissions /></Guard>} />
+        <Route path="/agent/theme" element={<Guard roles={agentRoles}><AgentThemeSettings /></Guard>} />
         <Route path="/agent/wallet" element={<Guard roles={agentRoles}><AgentWallet /></Guard>} />
 
         <Route path="/reseller" element={<Guard roles={resellerRoles}><ResellerDashboard /></Guard>} />
