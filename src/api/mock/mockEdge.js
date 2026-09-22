@@ -1,5 +1,5 @@
 // Local re-implementations of the Supabase Edge Functions (buy-data,
-// topup-verify, invite-reseller) so the buy/top-up flows work end-to-end in
+// topup-verify, invite-reseller, fraud-check) so the buy/top-up flows work end-to-end in
 // mock mode. Logic mirrors supabase/functions/*/index.ts.
 
 import { getDB, saveDB, uuid } from './mockData'
@@ -20,6 +20,32 @@ const PRICE_FIELD = {
   NETWORK_ADMIN: 'cost_price',
 }
 
+export async function mockFraudCheck(userId) {
+  const db = getDB()
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+  const failedTxs = db.transactions.filter(
+    (t) => t.user_id === userId && t.type === 'DATA_PURCHASE' && t.status === 'FAILED' && t.created_at >= oneHourAgo
+  )
+
+  if (failedTxs.length >= 5) {
+    const profile = db.profiles.find((p) => p.id === userId)
+    if (profile) profile.status = 'SUSPENDED'
+    db.audit_logs.unshift({
+      id: uuid(),
+      user_id: userId,
+      action: 'AUTO_SUSPEND',
+      resource: 'USER',
+      metadata: { reason: 'fraud_threshold_exceeded', failed_count: failedTxs.length },
+      ip_address: '127.0.0.1',
+      created_at: new Date().toISOString(),
+    })
+    saveDB()
+    return { suspended: true, failedCount: failedTxs.length }
+  }
+
+  return { suspended: false, failedCount: failedTxs.length }
+}
+
 export async function mockBuyData({ bundleId, recipientPhone, idempotencyKey }) {
   const db = getDB()
   const userId = currentUserId()
@@ -32,7 +58,7 @@ export async function mockBuyData({ bundleId, recipientPhone, idempotencyKey }) 
   // 2. Profile
   const profile = db.profiles.find((p) => p.id === userId)
   if (!profile) throw new Error('Profile not found')
-  if (profile.status === 'SUSPENDED') throw new Error('Account is suspended')
+  if (profile.status === 'SUSPENDED') throw new Error('Account is suspended. Contact support.')
 
   // 3. Bundle
   const bundle = db.data_bundles.find((b) => b.id === bundleId && b.is_active)
@@ -72,9 +98,9 @@ export async function mockBuyData({ bundleId, recipientPhone, idempotencyKey }) 
   db.transactions.unshift(tx)
   saveDB()
 
-  // 8. Fulfil (mocked telecom — ~90% success)
-  await delay(800 + Math.random() * 1200)
-  const success = Math.random() > 0.1
+  // 8. Fulfil (mocked telecom — 95% success rate)
+  await delay(600 + Math.random() * 800)
+  const success = Math.random() > 0.05
 
   if (success) {
     tx.status = 'SUCCESS'
@@ -116,7 +142,12 @@ export async function mockBuyData({ bundleId, recipientPhone, idempotencyKey }) 
     tx.status = 'FAILED'
     tx.metadata = { ...tx.metadata, error: 'Network temporarily unavailable' }
     saveDB()
-    throw new Error('Network temporarily unavailable')
+
+    const fraud = await mockFraudCheck(userId)
+    if (fraud.suspended) {
+      throw new Error('Account suspended due to consecutive failed transaction attempts.')
+    }
+    throw new Error('Network temporarily unavailable. Your wallet was refunded.')
   }
 }
 

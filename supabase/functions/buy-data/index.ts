@@ -36,32 +36,85 @@ serve(async (req) => {
     const { data: newWallet } = await supabase.from('wallets').select('balance').eq('user_id', user.id).single()
 
     const reference = `DH-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`
-    const { data: tx, error: txError } = await supabase.from('transactions').insert({
-      user_id: user.id,
-      type: 'DATA_PURCHASE',
-      amount,
-      balance_before: before,
-      balance_after: newWallet.balance,
-      status: 'SUCCESS',
-      reference,
-      idempotency_key: idempotencyKey,
-      network: bundle.network,
-      recipient_phone: recipientPhone,
-      bundle_id: bundle.id,
-      metadata: { bundle_name: bundle.name, data_size_mb: bundle.data_size_mb, telecom_mocked: true },
-    }).select().single()
-    if (txError) throw txError
+    
+    // Simulate telco dispatch or live telco API call
+    const telecomSuccess = true
 
-    if (profile.role === 'RESELLER' && profile.agent_id) {
-      const commission = bundle.reseller_price - bundle.agent_price
-      if (commission > 0) {
-        await supabase.from('commissions').insert({ user_id: profile.agent_id, transaction_id: tx.id, amount: commission, type: 'AGENT', status: 'PAID', paid_at: new Date().toISOString() })
-        await supabase.rpc('credit_wallet', { p_user_id: profile.agent_id, p_amount: commission })
+    if (telecomSuccess) {
+      const { data: tx, error: txError } = await supabase.from('transactions').insert({
+        user_id: user.id,
+        type: 'DATA_PURCHASE',
+        amount,
+        balance_before: before,
+        balance_after: newWallet.balance,
+        status: 'SUCCESS',
+        reference,
+        idempotency_key: idempotencyKey,
+        network: bundle.network,
+        recipient_phone: recipientPhone,
+        bundle_id: bundle.id,
+        metadata: { bundle_name: bundle.name, data_size_mb: bundle.data_size_mb, telecom_mocked: true },
+      }).select().single()
+      if (txError) throw txError
+
+      if (profile.role === 'RESELLER' && profile.agent_id) {
+        const commission = bundle.reseller_price - bundle.agent_price
+        if (commission > 0) {
+          await supabase.from('commissions').insert({ user_id: profile.agent_id, transaction_id: tx.id, amount: commission, type: 'AGENT', status: 'PAID', paid_at: new Date().toISOString() })
+          await supabase.rpc('credit_wallet', { p_user_id: profile.agent_id, p_amount: commission })
+        }
       }
-    }
 
-    await supabase.from('audit_logs').insert({ user_id: user.id, action: 'DATA_PURCHASE_SUCCESS', resource: 'transaction', metadata: { transaction_id: tx.id } })
-    return json({ success: true, data: tx })
+      await supabase.from('audit_logs').insert({ user_id: user.id, action: 'DATA_PURCHASE_SUCCESS', resource: 'transaction', metadata: { transaction_id: tx.id } })
+      return json({ success: true, data: tx })
+    } else {
+      // Refund wallet and record failed transaction
+      await supabase.rpc('credit_wallet', { p_user_id: user.id, p_amount: amount })
+      await supabase.from('transactions').insert({
+        user_id: user.id,
+        type: 'DATA_PURCHASE',
+        amount,
+        balance_before: before,
+        balance_after: before,
+        status: 'FAILED',
+        reference,
+        idempotency_key: idempotencyKey,
+        network: bundle.network,
+        recipient_phone: recipientPhone,
+        bundle_id: bundle.id,
+        metadata: { error: 'Telecom provider failure' },
+      })
+
+      // Trigger fraud check: count 1-hour failures
+      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+      const { count } = await supabase
+        .from('transactions')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('type', 'DATA_PURCHASE')
+        .eq('status', 'FAILED')
+        .gte('created_at', oneHourAgo)
+
+      let suspended = false
+      if ((count || 0) >= 5) {
+        suspended = true
+        await supabase.from('profiles').update({ status: 'SUSPENDED' }).eq('id', user.id)
+        await supabase.from('audit_logs').insert({
+          user_id: user.id,
+          action: 'AUTO_SUSPEND',
+          resource: 'USER',
+          metadata: { reason: 'fraud_threshold_exceeded', failed_count: count },
+        })
+      }
+
+      return json({
+        success: false,
+        message: suspended
+          ? 'Account suspended due to multiple failed transaction attempts.'
+          : 'Data purchase failed. Your wallet was refunded.',
+        suspendedAccount: suspended,
+      }, 400)
+    }
   } catch (error) {
     return json({ success: false, message: error.message }, 400)
   }
