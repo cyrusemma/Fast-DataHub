@@ -40,14 +40,14 @@ export default function CustomerWallet() {
 
           {/* Wallet activity history (TOPUP / REFUND) */}
           <div className="card overflow-hidden">
-            <div className="flex items-center justify-between border-b border-slate-100 p-5">
+            <div className="flex items-center justify-between border-b border-border p-5">
               <div>
-                <h2 className="font-display text-base font-bold text-dark">Wallet Deposits & Credits</h2>
-                <p className="mt-0.5 text-xs text-slate-500">
+                <h2 className="font-display text-base font-bold text-text">Wallet Deposits & Credits</h2>
+                <p className="mt-0.5 text-xs text-text-muted">
                   Recent top-ups and refund transactions
                 </p>
               </div>
-              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600">
+              <span className="rounded-full border border-border bg-surface-raised px-2.5 py-0.5 text-xs font-semibold text-text-muted">
                 {txData?.length || 0} records
               </span>
             </div>
@@ -55,20 +55,20 @@ export default function CustomerWallet() {
             {txLoading ? (
               <SkeletonRows rows={5} cols={4} />
             ) : txData && txData.length > 0 ? (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-border">
                 {txData.map((tx) => {
                   const isCredit = tx.type === 'TOPUP' || tx.type === 'REFUND'
                   return (
                     <div
                       key={tx.id}
-                      className="flex items-center justify-between gap-4 p-4 hover:bg-slate-50/70 transition"
+                      className="flex items-center justify-between gap-4 p-4 hover:bg-surface-raised/60 transition"
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <div
-                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${
                             isCredit
-                              ? 'bg-emerald-50 text-emerald-600'
-                              : 'bg-rose-50 text-rose-600'
+                              ? 'bg-success/15 border-success/20 text-success'
+                              : 'bg-danger/15 border-danger/20 text-danger'
                           }`}
                         >
                           {tx.type === 'REFUND' ? (
@@ -78,17 +78,17 @@ export default function CustomerWallet() {
                           )}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-display text-sm font-bold text-dark truncate">
+                          <p className="font-display text-sm font-bold text-text truncate">
                             {tx.type === 'REFUND' ? 'Wallet Refund' : 'Paystack Top-up'}
                           </p>
-                          <p className="text-xs text-slate-400 font-mono truncate">
+                          <p className="text-xs text-text-muted font-mono truncate">
                             {tx.reference} · {formatRelative(tx.created_at)}
                           </p>
                         </div>
                       </div>
 
                       <div className="text-right shrink-0">
-                        <p className="font-display text-sm font-extrabold text-emerald-600">
+                        <p className="font-display text-sm font-extrabold text-success">
                           +{formatGHS(tx.amount)}
                         </p>
                         <div className="mt-0.5 flex items-center justify-end gap-1.5">
