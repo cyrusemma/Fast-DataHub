@@ -40,17 +40,17 @@ export default function AdminFinance() {
       </div>
 
       <div className="card mt-6 p-6">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div className="flex items-center justify-between border-b border-border pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-50 text-primary">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/15 text-primary">
               <PieIcon size={20} />
             </div>
             <div>
-              <h2 className="font-display text-base font-bold text-dark">Revenue by Network Operator</h2>
-              <p className="text-xs text-slate-500">Distribution of successful data sales across telcos</p>
+              <h2 className="font-display text-base font-bold text-text">Revenue by Network Operator</h2>
+              <p className="text-xs text-text-muted">Distribution of successful data sales across telcos</p>
             </div>
           </div>
-          <span className="text-xs font-bold text-slate-400">
+          <span className="text-xs font-bold text-text-muted">
             Total: {formatGHS(data?.revenue)}
           </span>
         </div>
@@ -72,12 +72,18 @@ export default function AdminFinance() {
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 >
                   {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} stroke="#ffffff" strokeWidth={2} />
+                    <Cell key={`cell-${index}`} fill={entry.fill} stroke="var(--color-surface)" strokeWidth={2} />
                   ))}
                 </Pie>
                 <Tooltip
                   formatter={(value) => [formatGHS(value), 'Revenue']}
-                  contentStyle={{ backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
+                  contentStyle={{
+                    backgroundColor: 'var(--color-surface)',
+                    borderColor: 'var(--color-border)',
+                    borderRadius: '12px',
+                    color: 'var(--color-text)',
+                    boxShadow: 'var(--shadow-md)',
+                  }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -85,22 +91,22 @@ export default function AdminFinance() {
 
           {/* Network Legend Breakdown */}
           <div className="space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Operator Split</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-text-muted">Operator Split</h3>
             {chartData.map((item) => (
               <div
                 key={item.network}
-                className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/50 p-3.5"
+                className="flex items-center justify-between rounded-xl border border-border bg-surface-raised p-3.5"
               >
                 <div className="flex items-center gap-2.5">
-                  <div className="h-3.5 w-3.5 rounded-full" style={{ backgroundColor: item.fill }} />
+                  <div className="h-3.5 w-3.5 rounded-full shadow-sm" style={{ backgroundColor: item.fill }} />
                   <NetworkBadge network={item.network} />
                 </div>
 
                 <div className="text-right">
-                  <span className="font-display text-sm font-bold text-dark">
+                  <span className="font-display text-sm font-bold text-text">
                     {formatGHS(item.value)}
                   </span>
-                  <span className="block text-[11px] font-semibold text-slate-400 font-mono">
+                  <span className="block text-[11px] font-semibold text-text-muted font-mono">
                     {item.percentage}% of volume
                   </span>
                 </div>
