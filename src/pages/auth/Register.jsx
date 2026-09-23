@@ -71,11 +71,11 @@ export default function Register() {
   return (
     <AuthLayout title="Create your account" subtitle="Join DataHUB in under a minute.">
       {inviteFromUrl && (
-        <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-primary/20 bg-primary-50 p-3.5 text-xs text-primary">
+        <div className="mb-4 flex items-start gap-2.5 rounded-2xl border border-primary/20 bg-primary/10 p-3.5 text-xs text-primary">
           <Info size={18} className="shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">Invited by Agent</p>
-            <p className="mt-0.5 text-slate-600">
+            <p className="mt-0.5 text-text-muted">
               You were invited by an agent. Your account will be linked automatically.
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function Register() {
               placeholder="AGT-XX-XXXX"
               icon={Ticket}
               readOnly={Boolean(inviteFromUrl)}
-              className={inviteFromUrl ? 'bg-slate-50 cursor-not-allowed font-mono font-bold' : ''}
+              className={inviteFromUrl ? 'bg-surface-raised cursor-not-allowed font-mono font-bold' : ''}
               error={errors.inviteCode?.message}
               {...register('inviteCode')}
             />
@@ -120,9 +120,9 @@ export default function Register() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-text-muted">
         Already have an account?{' '}
-        <Link to="/login" className="font-semibold text-primary hover:text-primary-600">
+        <Link to="/login" className="font-semibold text-primary hover:text-primary-hover">
           Sign in
         </Link>
       </p>
