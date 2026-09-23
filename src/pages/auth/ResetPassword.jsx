@@ -55,7 +55,7 @@ export default function ResetPassword() {
   return (
     <AuthLayout title="Set a new password" subtitle="Choose a strong password to secure your account.">
       {serverError && (
-        <div className="mb-4 flex items-center gap-2 rounded-xl border border-danger/20 bg-danger-light p-3 text-xs text-danger">
+        <div className="mb-4 flex items-center gap-2 rounded-xl border border-danger/20 bg-danger/10 p-3 text-xs text-danger">
           <AlertCircle size={16} className="shrink-0" />
           <span>{serverError}</span>
         </div>
@@ -79,8 +79,8 @@ export default function ResetPassword() {
           {...register('confirm')}
         />
 
-        <div className="rounded-lg bg-slate-50 p-3 text-[11px] text-slate-500">
-          <p className="font-semibold text-slate-700">Password requirements:</p>
+        <div className="rounded-xl border border-border bg-surface-raised p-3 text-[11px] text-text-muted">
+          <p className="font-semibold text-text">Password requirements:</p>
           <ul className="mt-1 list-disc pl-4 space-y-0.5">
             <li>At least 8 characters in length</li>
             <li>At least 1 uppercase letter</li>
@@ -93,9 +93,9 @@ export default function ResetPassword() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-text-muted">
         Remember your password?{' '}
-        <Link to="/login" className="font-semibold text-primary hover:text-primary-600">
+        <Link to="/login" className="font-semibold text-primary hover:text-primary-hover">
           Sign in
         </Link>
       </p>
