@@ -64,26 +64,26 @@ export default function Login() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-text-muted">
         New to DataHUB?{' '}
-        <Link to="/register" className="font-semibold text-primary hover:text-primary-600">
+        <Link to="/register" className="font-semibold text-primary hover:text-primary-hover">
           Create an account
         </Link>
       </p>
 
       {IS_MOCK && (
-        <div className="mt-8 rounded-xl border border-dashed border-primary/30 bg-primary-50/50 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-primary">Demo mode · tap to fill</p>
+        <div className="mt-8 rounded-2xl border border-dashed border-primary/30 bg-primary/5 p-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">Demo mode · tap to fill</p>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {DEMO_ACCOUNTS.map((a) => (
               <button
                 key={a.label}
                 type="button"
                 onClick={() => fillDemo(a)}
-                className="rounded-lg border border-primary/20 bg-white px-3 py-2 text-left text-xs transition hover:border-primary hover:shadow-sm"
+                className="rounded-xl border border-border bg-surface p-2.5 text-left text-xs transition hover:border-primary hover:bg-surface-raised hover:shadow-sm"
               >
-                <span className="block font-semibold text-dark">{a.label}</span>
-                <span className="text-slate-400">{a.email}</span>
+                <span className="block font-semibold text-text">{a.label}</span>
+                <span className="text-[11px] text-text-muted truncate block">{a.email}</span>
               </button>
             ))}
           </div>
