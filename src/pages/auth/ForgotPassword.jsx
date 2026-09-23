@@ -31,14 +31,14 @@ export default function ForgotPassword() {
   if (sent) {
     return (
       <AuthLayout title="Check your inbox" subtitle="We've sent you a password reset link.">
-        <div className="rounded-xl border border-success/20 bg-success-light p-5 text-center">
+        <div className="rounded-2xl border border-success/20 bg-success/10 p-5 text-center shadow-sm">
           <MailCheck className="mx-auto text-success" size={36} />
-          <p className="mt-3 text-sm text-slate-600">
-            If an account exists for <span className="font-semibold text-dark">{getValues('email')}</span>, a reset
+          <p className="mt-3 text-sm text-text-muted">
+            If an account exists for <span className="font-semibold text-text">{getValues('email')}</span>, a reset
             link is on its way.
           </p>
         </div>
-        <Link to="/login" className="mt-6 flex items-center justify-center gap-1.5 text-sm font-medium text-primary hover:text-primary-600">
+        <Link to="/login" className="mt-6 flex items-center justify-center gap-1.5 text-sm font-medium text-primary hover:text-primary-hover">
           <ArrowLeft size={16} /> Back to sign in
         </Link>
       </AuthLayout>
@@ -53,7 +53,7 @@ export default function ForgotPassword() {
           Send reset link
         </Button>
       </form>
-      <Link to="/login" className="mt-6 flex items-center justify-center gap-1.5 text-sm font-medium text-primary hover:text-primary-600">
+      <Link to="/login" className="mt-6 flex items-center justify-center gap-1.5 text-sm font-medium text-primary hover:text-primary-hover">
         <ArrowLeft size={16} /> Back to sign in
       </Link>
     </AuthLayout>
