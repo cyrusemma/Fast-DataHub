@@ -43,10 +43,10 @@ export default function AgentResellers() {
     <>
       <PageHeader title="My resellers" subtitle="Invite and manage resellers under your agent account." action={<Button icon={UserPlus} loading={loading} onClick={generate}>Generate invite</Button>} />
       {invite && (
-        <div className="mb-5 flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-primary/20 bg-primary/10 p-4 sm:flex-row sm:items-center sm:justify-between shadow-sm">
           <div>
-            <p className="text-xs font-semibold uppercase text-primary">Invite code</p>
-            <p className="font-display text-lg font-bold text-dark">{invite.inviteCode}</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">Invite code</p>
+            <p className="font-display text-lg font-bold text-text">{invite.inviteCode}</p>
           </div>
           <Button variant="secondary" icon={Copy} onClick={copy}>Copy invite</Button>
         </div>
