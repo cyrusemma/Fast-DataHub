@@ -13,20 +13,22 @@ export default function RecentTransactions() {
 
   return (
     <div className="card overflow-hidden">
-      <div className="border-b border-slate-100 px-5 py-4">
-        <h2 className="font-display text-base font-bold text-dark">Recent transactions</h2>
+      <div className="border-b border-border px-5 py-4 flex items-center justify-between">
+        <h2 className="font-display text-base font-bold text-text">Recent transactions</h2>
       </div>
-      {isLoading ? <SkeletonRows rows={5} cols={3} /> : data.length === 0 ? (
+      {isLoading ? (
+        <SkeletonRows rows={5} cols={3} />
+      ) : data.length === 0 ? (
         <EmptyState icon={Receipt} title="No transactions yet" message="Activity will appear here after your first top-up or data purchase." />
       ) : (
-        <div className="divide-y divide-slate-100">
+        <div className="divide-y divide-border">
           {data.map((tx) => {
             const credit = CREDIT_TYPES.includes(tx.type)
             return (
-              <div key={tx.id} className="flex items-center justify-between gap-4 px-5 py-4">
+              <div key={tx.id} className="flex items-center justify-between gap-4 px-5 py-4 transition hover:bg-surface-raised/60">
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-dark">{tx.data_bundles?.name || tx.type.replace('_', ' ')}</p>
-                  <p className="mt-0.5 text-xs text-slate-400">{formatRelative(tx.created_at)}</p>
+                  <p className="truncate text-sm font-semibold text-text">{tx.data_bundles?.name || tx.type.replace('_', ' ')}</p>
+                  <p className="mt-0.5 text-xs text-text-muted">{formatRelative(tx.created_at)}</p>
                 </div>
                 <div className="text-right">
                   <p className={credit ? 'text-sm font-bold text-success' : 'text-sm font-bold text-danger'}>
