@@ -45,13 +45,40 @@
 [data-mode="dark"] {
   --color-bg: #0B0F19;
   --color-bg-subtle: #111827;
-  --color-surface: #1E2433;
-  --color-surface-raised: #252D3D;
-  --color-border: #2D3748;
-  --color-border-strong: #4A5568;
+  --color-surface: #141C2E;
+  --color-surface-raised: #1C263C;
+  --color-border: #243047;
+  --color-border-strong: #384869;
   --color-text: #F1F5F9;
   --color-text-muted: #94A3B8;
   --color-text-subtle: #64748B;
+
+  --color-primary-text: #FFFFFF;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #06B6D4;
+  --color-success-bg: rgba(34, 197, 94, 0.14);
+  --color-warning-bg: rgba(245, 158, 11, 0.14);
+  --color-danger-bg: rgba(239, 68, 68, 0.14);
+  --color-info-bg: rgba(6, 182, 212, 0.14);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.6), 0 8px 16px rgba(0, 0, 0, 0.45);
+}
+
+/* ── AMOLED Base Mode (Pure Black #000000) ── */
+[data-mode="amoled"] {
+  --color-bg: #000000;
+  --color-bg-subtle: #090909;
+  --color-surface: #121212;
+  --color-surface-raised: #1A1A1A;
+  --color-border: #242424;
+  --color-border-strong: #383838;
+  --color-text: #FFFFFF;
+  --color-text-muted: #A0AEC0;
+  --color-text-subtle: #636B78;
 
   --color-primary-text: #FFFFFF;
   --color-success: #22C55E;
@@ -63,36 +90,9 @@
   --color-danger-bg: rgba(239, 68, 68, 0.12);
   --color-info-bg: rgba(6, 182, 212, 0.12);
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
-}
-
-/* ── AMOLED Base Mode (Pure Black #000000) ── */
-[data-mode="amoled"] {
-  --color-bg: #000000;
-  --color-bg-subtle: #0A0A0A;
-  --color-surface: #111111;
-  --color-surface-raised: #1A1A1A;
-  --color-border: #222222;
-  --color-border-strong: #333333;
-  --color-text: #FFFFFF;
-  --color-text-muted: #A0A0A0;
-  --color-text-subtle: #555555;
-
-  --color-primary-text: #FFFFFF;
-  --color-success: #22C55E;
-  --color-warning: #F59E0B;
-  --color-danger: #EF4444;
-  --color-info: #06B6D4;
-  --color-success-bg: rgba(34, 197, 94, 0.08);
-  --color-warning-bg: rgba(245, 158, 11, 0.08);
-  --color-danger-bg: rgba(239, 68, 68, 0.08);
-  --color-info-bg: rgba(6, 182, 212, 0.08);
-
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.6);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.7);
-  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.8);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.7);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.8);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.9);
 }
 
 /* ── PALETTE 1: DEFAULT (DataHUB Brand Blue) ── */
