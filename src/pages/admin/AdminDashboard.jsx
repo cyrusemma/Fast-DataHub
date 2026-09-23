@@ -23,9 +23,12 @@ export default function AdminDashboard() {
       </div>
 
       <div className="card mt-6 p-6">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-          <h2 className="font-display text-base font-bold text-dark">Revenue Trend (Last 14 Days)</h2>
-          <span className="text-xs font-semibold text-slate-400">Daily Gross Volume</span>
+        <div className="flex items-center justify-between border-b border-border pb-4">
+          <div>
+            <h2 className="font-display text-base font-bold text-text">Revenue Trend (Last 14 Days)</h2>
+            <p className="text-xs text-text-muted">Daily Gross Volume across all telcos</p>
+          </div>
+          <span className="text-xs font-semibold text-text-subtle">GHS Volume</span>
         </div>
 
         <div className="mt-5 h-80">
@@ -43,11 +46,20 @@ export default function AdminDashboard() {
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chart.data || []}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                <YAxis tickFormatter={formatGHSCompact} tick={{ fontSize: 12 }} />
-                <Tooltip formatter={(v) => [formatGHS(v), 'Revenue']} />
-                <Line type="monotone" dataKey="revenue" stroke="#0066FF" strokeWidth={3} dot={{ fill: '#0066FF', r: 3 }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.6} />
+                <XAxis dataKey="date" tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }} stroke="var(--color-border)" />
+                <YAxis tickFormatter={formatGHSCompact} tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }} stroke="var(--color-border)" />
+                <Tooltip
+                  formatter={(v) => [formatGHS(v), 'Revenue']}
+                  contentStyle={{
+                    backgroundColor: 'var(--color-surface)',
+                    borderColor: 'var(--color-border)',
+                    borderRadius: '12px',
+                    color: 'var(--color-text)',
+                    boxShadow: 'var(--shadow-md)',
+                  }}
+                />
+                <Line type="monotone" dataKey="revenue" stroke="var(--color-primary)" strokeWidth={3} dot={{ fill: 'var(--color-primary)', r: 4 }} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>
           )}
