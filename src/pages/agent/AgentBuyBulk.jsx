@@ -232,7 +232,7 @@ export default function AgentBuyBulk() {
         <div className="space-y-5">
           {/* 1. Network Selector */}
           <div className="card p-5">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wider text-slate-500">
+            <h2 className="font-display text-xs font-bold uppercase tracking-wider text-text-muted">
               Step 1 · Select Carrier
             </h2>
             <div className="mt-3">
@@ -250,17 +250,17 @@ export default function AgentBuyBulk() {
           {/* 2. Bundle Selector */}
           <div className="card p-5">
             <div className="flex items-center justify-between">
-              <h2 className="font-display text-sm font-bold uppercase tracking-wider text-slate-500">
+              <h2 className="font-display text-xs font-bold uppercase tracking-wider text-text-muted">
                 Step 2 · Select Agent Bundle
               </h2>
-              <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700">
+              <span className="rounded-full border border-success/30 bg-success/15 px-2.5 py-0.5 text-xs font-bold text-success">
                 Agent Wholesale Rate
               </span>
             </div>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {bundlesLoading ? (
-                <div className="col-span-2 py-8 text-center text-sm text-slate-400">
+                <div className="col-span-2 py-8 text-center text-sm text-text-muted">
                   Loading agent bundles...
                 </div>
               ) : bundles.length > 0 ? (
@@ -273,7 +273,7 @@ export default function AgentBuyBulk() {
                   />
                 ))
               ) : (
-                <div className="col-span-2 py-6 text-center text-sm text-slate-400">
+                <div className="col-span-2 py-6 text-center text-sm text-text-muted">
                   No active bundles for {network}
                 </div>
               )}
@@ -282,35 +282,35 @@ export default function AgentBuyBulk() {
 
           {/* 3. Cost Preview & Wallet Check */}
           <div className="card p-5">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wider text-slate-500">
+            <h2 className="font-display text-xs font-bold uppercase tracking-wider text-text-muted">
               Batch Cost & Wallet Summary
             </h2>
 
-            <div className="mt-4 space-y-3 divide-y divide-slate-100 text-sm">
+            <div className="mt-4 space-y-3 divide-y divide-border text-sm">
               <div className="flex justify-between">
-                <span className="text-slate-500">Selected Bundle</span>
-                <span className="font-bold text-dark">{selectedBundle?.name || 'None selected'}</span>
+                <span className="text-text-muted">Selected Bundle</span>
+                <span className="font-bold text-text">{selectedBundle?.name || 'None selected'}</span>
               </div>
               <div className="flex justify-between pt-2">
-                <span className="text-slate-500">Unit Agent Price</span>
+                <span className="text-text-muted">Unit Agent Price</span>
                 <span className="font-bold text-primary">{formatGHS(bundlePrice)}</span>
               </div>
               <div className="flex justify-between pt-2">
-                <span className="text-slate-500">Valid Recipients</span>
-                <span className="font-extrabold text-dark">{validItems.length}</span>
+                <span className="text-text-muted">Valid Recipients</span>
+                <span className="font-extrabold text-text">{validItems.length}</span>
               </div>
               <div className="flex justify-between pt-2 text-base">
-                <span className="font-bold text-dark">Total Batch Cost</span>
+                <span className="font-bold text-text">Total Batch Cost</span>
                 <span className="font-display font-black text-primary">{formatGHS(totalCost)}</span>
               </div>
               <div className="flex justify-between pt-2">
-                <span className="text-slate-500">Available Wallet</span>
-                <span className="font-bold text-dark">{formatGHS(balance)}</span>
+                <span className="text-text-muted">Available Wallet</span>
+                <span className="font-bold text-text">{formatGHS(balance)}</span>
               </div>
             </div>
 
             {!hasSufficientBalance && totalCost > 0 && (
-              <div className="mt-4 flex items-center gap-2 rounded-xl border border-danger/30 bg-danger-light p-3 text-xs text-danger font-semibold">
+              <div className="mt-4 flex items-center gap-2 rounded-xl border border-danger/30 bg-danger/10 p-3 text-xs text-danger font-semibold">
                 <AlertTriangle size={16} className="shrink-0" />
                 <span>Insufficient balance. Need {formatGHS(totalCost - balance)} more.</span>
               </div>
@@ -338,8 +338,8 @@ export default function AgentBuyBulk() {
           <div className="card p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h2 className="font-display text-base font-bold text-dark">Step 3 · Recipient Numbers</h2>
-                <p className="mt-0.5 text-xs text-slate-500">
+                <h2 className="font-display text-base font-bold text-text">Step 3 · Recipient Numbers</h2>
+                <p className="mt-0.5 text-xs text-text-muted">
                   Paste numbers or upload a CSV/TXT list (one number per line).
                 </p>
               </div>
@@ -368,29 +368,29 @@ export default function AgentBuyBulk() {
                 value={rawText}
                 onChange={handleTextChange}
                 placeholder="0241234567&#10;0559876543&#10;0201122334"
-                className="w-full rounded-xl border border-slate-200 bg-white p-3 font-mono text-xs text-dark focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full rounded-xl border border-border bg-surface-raised p-3 font-mono text-xs text-text placeholder:text-text-subtle focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
             </div>
 
             {/* Validation quick stats & action pills */}
             {items.length > 0 && (
-              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 text-xs">
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3 text-xs">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="rounded-md bg-emerald-50 px-2 py-1 font-bold text-emerald-700">
+                  <span className="rounded-md border border-success/30 bg-success/15 px-2.5 py-1 font-bold text-success">
                     {validItems.length} Valid
                   </span>
                   {mismatchCount > 0 && (
-                    <span className="rounded-md bg-amber-50 px-2 py-1 font-bold text-amber-700">
+                    <span className="rounded-md border border-warning/30 bg-warning/15 px-2.5 py-1 font-bold text-warning">
                       {mismatchCount} Carrier Mismatch
                     </span>
                   )}
                   {invalidCount > 0 && (
-                    <span className="rounded-md bg-rose-50 px-2 py-1 font-bold text-rose-700">
+                    <span className="rounded-md border border-danger/30 bg-danger/15 px-2.5 py-1 font-bold text-danger">
                       {invalidCount} Invalid
                     </span>
                   )}
                   {duplicateCount > 0 && (
-                    <span className="rounded-md bg-purple-50 px-2 py-1 font-bold text-purple-700">
+                    <span className="rounded-md border border-accent/30 bg-accent/15 px-2.5 py-1 font-bold text-accent">
                       {duplicateCount} Duplicate
                     </span>
                   )}
@@ -401,7 +401,7 @@ export default function AgentBuyBulk() {
                     <button
                       type="button"
                       onClick={removeInvalid}
-                      className="text-xs font-semibold text-rose-600 hover:underline"
+                      className="text-xs font-semibold text-danger hover:underline"
                     >
                       Clean Invalid
                     </button>
@@ -410,7 +410,7 @@ export default function AgentBuyBulk() {
                     <button
                       type="button"
                       onClick={removeMismatches}
-                      className="ml-2 text-xs font-semibold text-amber-600 hover:underline"
+                      className="ml-2 text-xs font-semibold text-warning hover:underline"
                     >
                       Remove Non-{network}
                     </button>
@@ -418,7 +418,7 @@ export default function AgentBuyBulk() {
                   <button
                     type="button"
                     onClick={clearAll}
-                    className="ml-2 text-xs font-semibold text-slate-400 hover:text-dark"
+                    className="ml-2 text-xs font-semibold text-text-muted hover:text-text"
                   >
                     Clear All
                   </button>
@@ -429,65 +429,65 @@ export default function AgentBuyBulk() {
 
           {/* Progress bar when dispatching */}
           {isProcessing && (
-            <div className="card p-5 bg-gradient-to-r from-primary-50 to-emerald-50 border border-primary/20">
-              <div className="flex items-center justify-between text-xs font-bold text-dark">
+            <div className="card p-5 bg-gradient-to-r from-primary/10 to-success/10 border border-primary/20">
+              <div className="flex items-center justify-between text-xs font-bold text-text">
                 <span>Dispatching Batch...</span>
                 <span>
                   {progress.current} of {progress.total} ({Math.round((progress.current / progress.total) * 100)}%)
                 </span>
               </div>
-              <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-slate-200">
+              <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-surface-raised border border-border">
                 <div
                   className="h-full bg-primary transition-all duration-300"
                   style={{ width: `${(progress.current / progress.total) * 100}%` }}
                 />
               </div>
-              <div className="mt-2 flex justify-between text-[11px] text-slate-500">
-                <span className="text-emerald-600 font-bold">{progress.successCount} Succeeded</span>
-                <span className="text-rose-600 font-bold">{progress.failCount} Failed</span>
+              <div className="mt-2 flex justify-between text-[11px] text-text-muted">
+                <span className="text-success font-bold">{progress.successCount} Succeeded</span>
+                <span className="text-danger font-bold">{progress.failCount} Failed</span>
               </div>
             </div>
           )}
 
           {/* Parsed Numbers Table */}
           <div className="card overflow-hidden">
-            <div className="border-b border-slate-100 p-4">
-              <h3 className="font-display text-sm font-bold text-dark">
+            <div className="border-b border-border p-4">
+              <h3 className="font-display text-sm font-bold text-text">
                 Parsed Numbers Roster ({items.length})
               </h3>
             </div>
 
             {items.length === 0 ? (
-              <div className="py-12 text-center text-xs text-slate-400">
+              <div className="py-12 text-center text-xs text-text-muted">
                 No phone numbers loaded. Enter or paste numbers above.
               </div>
             ) : (
-              <div className="max-h-96 overflow-y-auto divide-y divide-slate-100 text-xs">
+              <div className="max-h-96 overflow-y-auto divide-y divide-border text-xs">
                 {items.map((item) => (
                   <div
                     key={item.id}
                     className={`flex items-center justify-between p-3.5 transition ${
                       item.isMismatch || !item.isValid || item.isDuplicate
-                        ? 'bg-amber-50/40'
-                        : 'hover:bg-slate-50'
+                        ? 'bg-warning/10'
+                        : 'hover:bg-surface-raised'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Phone size={15} className="text-slate-400" />
+                      <Phone size={15} className="text-text-subtle" />
                       <div>
-                        <p className="font-mono font-bold text-dark">{item.phone || item.raw}</p>
+                        <p className="font-mono font-bold text-text">{item.phone || item.raw}</p>
                         <div className="mt-0.5 flex items-center gap-2">
                           {item.carrier && <NetworkBadge network={item.carrier} />}
                           {!item.isValid && (
-                            <span className="text-[11px] font-semibold text-rose-600">Invalid phone</span>
+                            <span className="text-[11px] font-semibold text-danger">Invalid phone</span>
                           )}
                           {item.isMismatch && (
-                            <span className="text-[11px] font-semibold text-amber-600">
+                            <span className="text-[11px] font-semibold text-warning">
                               Requires {item.carrier}
                             </span>
                           )}
                           {item.isDuplicate && (
-                            <span className="text-[11px] font-semibold text-purple-600">Duplicate</span>
+                            <span className="text-[11px] font-semibold text-accent">Duplicate</span>
                           )}
                         </div>
                       </div>
@@ -498,12 +498,12 @@ export default function AgentBuyBulk() {
                         <span className="font-semibold text-primary animate-pulse">Sending...</span>
                       )}
                       {item.status === 'success' && (
-                        <span className="inline-flex items-center gap-1 font-bold text-emerald-600">
+                        <span className="inline-flex items-center gap-1 font-bold text-success">
                           <CheckCircle2 size={15} /> Delivered
                         </span>
                       )}
                       {item.status === 'failed' && (
-                        <span className="inline-flex items-center gap-1 font-bold text-rose-600" title={item.errorMessage}>
+                        <span className="inline-flex items-center gap-1 font-bold text-danger" title={item.errorMessage}>
                           <XCircle size={15} /> Failed
                         </span>
                       )}
@@ -511,7 +511,7 @@ export default function AgentBuyBulk() {
                         type="button"
                         onClick={() => removeRow(item.id)}
                         disabled={isProcessing}
-                        className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-rose-600 transition"
+                        className="rounded-lg p-1.5 text-text-muted hover:bg-surface hover:text-danger transition"
                       >
                         <Trash2 size={14} />
                       </button>
