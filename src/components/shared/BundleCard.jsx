@@ -11,17 +11,26 @@ export default function BundleCard({ bundle, selected, onSelect }) {
       type="button"
       onClick={() => onSelect?.(bundle)}
       className={cn(
-        'relative rounded-xl border bg-surface p-4 text-left shadow-card transition hover:-translate-y-0.5 hover:shadow-card-hover',
-        selected ? 'border-primary ring-2 ring-primary/20' : 'border-border'
+        'group relative w-full rounded-2xl border p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md',
+        selected
+          ? 'border-primary bg-primary/5 ring-2 ring-primary/30 shadow-primary/10'
+          : 'border-border bg-surface hover:border-border-strong hover:bg-surface-raised'
       )}
     >
-      {selected && <CheckCircle size={18} className="absolute right-3 top-3 text-primary" />}
-      <span className="inline-flex rounded-md px-2 py-1 text-xs font-bold" style={{ backgroundColor: network?.color, color: network?.text }}>
+      {selected && <CheckCircle size={18} className="absolute right-3.5 top-3.5 text-primary animate-fade-in" />}
+      <span
+        className="inline-flex rounded-lg px-2.5 py-1 text-xs font-bold shadow-sm"
+        style={{ backgroundColor: network?.color, color: network?.text }}
+      >
         {network?.label || bundle.network}
       </span>
-      <p className="mt-4 font-display text-xl font-extrabold text-text">{formatDataSize(bundle.data_size_mb)}</p>
-      <p className="mt-1 text-sm text-text-muted">{bundle.validity_days} day validity</p>
-      <p className="mt-4 font-display text-lg font-bold text-primary">{formatGHS(bundle.price ?? bundle.selling_price)}</p>
+      <p className="mt-3 font-display text-lg sm:text-xl font-extrabold text-text tracking-tight">
+        {formatDataSize(bundle.data_size_mb)}
+      </p>
+      <p className="mt-0.5 text-xs text-text-muted">{bundle.validity_days} day validity</p>
+      <p className="mt-3 font-display text-base sm:text-lg font-black text-primary">
+        {formatGHS(bundle.price ?? bundle.selling_price)}
+      </p>
     </button>
   )
 }
