@@ -7,8 +7,8 @@ export default function Spinner({ size = 20, className }) {
 
 export function FullPageSpinner({ label = 'Loading…' }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 py-24 text-slate-400">
-      <Spinner size={32} />
+    <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-bg py-24 text-text-muted">
+      <Spinner size={36} />
       <p className="text-sm font-medium">{label}</p>
     </div>
   )
