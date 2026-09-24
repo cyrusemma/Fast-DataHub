@@ -5,6 +5,7 @@ import PageHeader from '../../components/shared/PageHeader'
 import DataTable from '../../components/ui/DataTable'
 import { StatusBadge } from '../../components/ui/Badge'
 import EmptyState from '../../components/ui/EmptyState'
+import TransactionReceiptModal from '../../components/shared/TransactionReceiptModal'
 import { getTransactions } from '../../api/transactions.api'
 import { formatGHS } from '../../utils/formatCurrency'
 import { formatDateTime } from '../../utils/formatDate'
@@ -12,15 +13,18 @@ import { CREDIT_TYPES } from '../../utils/constants'
 
 export default function CustomerHistory() {
   const [page, setPage] = useState(1)
+  const [selectedTx, setSelectedTx] = useState(null)
   const { data, isLoading } = useQuery({ queryKey: ['transactions', page], queryFn: () => getTransactions({ page, limit: 12 }) })
+  
   const columns = [
-    { key: 'reference', header: 'Reference' },
-    { key: 'type', header: 'Type', render: (r) => r.type.replace('_', ' ') },
+    { key: 'reference', header: 'Reference', render: (r) => <span className="font-mono font-bold text-xs">{r.reference}</span> },
+    { key: 'type', header: 'Type', render: (r) => r.type.replace(/_/g, ' ') },
     { key: 'bundle', header: 'Bundle', render: (r) => r.data_bundles?.name || '-' },
     { key: 'amount', header: 'Amount', align: 'right', render: (r) => <span className={CREDIT_TYPES.includes(r.type) ? 'font-bold text-success' : 'font-bold text-danger'}>{CREDIT_TYPES.includes(r.type) ? '+' : '-'}{formatGHS(r.amount)}</span> },
     { key: 'status', header: 'Status', render: (r) => <StatusBadge status={r.status} /> },
     { key: 'created_at', header: 'Date', render: (r) => formatDateTime(r.created_at) },
   ]
+
   return (
     <>
       <PageHeader title="History" subtitle="All wallet top-ups, data purchases, and refunds." />
@@ -32,8 +36,16 @@ export default function CustomerHistory() {
         totalPages={data?.totalPages}
         total={data?.total}
         onPageChange={setPage}
+        onRowClick={(row) => setSelectedTx(row)}
         empty={<EmptyState icon={Receipt} title="No transactions found" />}
+      />
+
+      <TransactionReceiptModal
+        open={Boolean(selectedTx)}
+        transaction={selectedTx}
+        onClose={() => setSelectedTx(null)}
       />
     </>
   )
 }
+
