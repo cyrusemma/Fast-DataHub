@@ -31,6 +31,7 @@ import AdminBundles from './pages/admin/AdminBundles'
 import AdminFinance from './pages/admin/AdminFinance'
 import AdminAuditLogs from './pages/admin/AdminAuditLogs'
 import AdminThemeSettings from './pages/admin/AdminThemeSettings'
+import NotFound from './pages/NotFound'
 import ErrorBoundary from './components/ErrorBoundary'
 
 const customerRoles = ['CUSTOMER']
@@ -86,7 +87,7 @@ export default function App() {
         <Route path="/admin/audit-logs" element={<Guard roles={auditRoles}><AdminAuditLogs /></Guard>} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
     </ErrorBoundary>
   )
