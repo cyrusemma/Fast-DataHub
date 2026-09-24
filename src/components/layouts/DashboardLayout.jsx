@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Sidebar from './Sidebar'
 import TopBar from './TopBar'
+import MobileBottomNav from './MobileBottomNav'
 
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -12,7 +13,7 @@ export default function DashboardLayout() {
     <div className="flex min-h-screen bg-bg">
       <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col pb-20 lg:pb-0">
         <TopBar onMenuClick={() => setMobileOpen(true)} />
         <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
           <AnimatePresence mode="wait">
@@ -29,6 +30,9 @@ export default function DashboardLayout() {
           </AnimatePresence>
         </main>
       </div>
+
+      <MobileBottomNav />
     </div>
   )
 }
+
