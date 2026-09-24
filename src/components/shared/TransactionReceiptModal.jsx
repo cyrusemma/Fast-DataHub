@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import Modal from '../ui/Modal'
 import Button from '../ui/Button'
+import CopyButton from '../ui/CopyButton'
 import { StatusBadge, NetworkBadge } from '../ui/Badge'
 import { formatGHS } from '../../utils/formatCurrency'
 import { formatDateTime } from '../../utils/formatDate'
@@ -93,30 +94,18 @@ export default function TransactionReceiptModal({ transaction, open, onClose }) 
 
         {/* Reference Strip */}
         <div className="flex items-center justify-between rounded-xl border border-border bg-surface px-4 py-2.5 text-xs">
-          <div className="min-w-0">
+          <div className="min-w-0 pr-2">
             <span className="text-text-muted">Reference: </span>
             <span className="font-mono font-bold text-text truncate select-all">
               {transaction.reference || 'N/A'}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={handleCopy}
-            title="Copy reference code"
-            className="ml-2 flex items-center gap-1 rounded-lg border border-border bg-surface-raised px-2.5 py-1 font-semibold text-text transition hover:border-primary/40 hover:text-primary"
-          >
-            {copied ? (
-              <>
-                <Check size={13} className="text-success" />
-                <span className="text-success text-[11px]">Copied</span>
-              </>
-            ) : (
-              <>
-                <Copy size={13} />
-                <span className="text-[11px]">Copy</span>
-              </>
-            )}
-          </button>
+          <CopyButton
+            text={transaction.reference}
+            label="Copy Ref"
+            size="xs"
+            toastMessage="Transaction reference copied"
+          />
         </div>
 
         {/* Detailed Breakdown */}
