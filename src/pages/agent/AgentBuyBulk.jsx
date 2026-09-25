@@ -9,7 +9,6 @@ import {
   XCircle,
   Play,
   Wallet,
-  Sparkles,
   Info,
   Layers,
   Phone,

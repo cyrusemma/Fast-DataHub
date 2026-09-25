@@ -5,7 +5,6 @@ import {
   Sun,
   Moon,
   Zap,
-  Sparkles,
   Check,
   RotateCcw,
   Save,

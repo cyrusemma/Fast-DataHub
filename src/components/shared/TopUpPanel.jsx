@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { CreditCard, Sparkles } from 'lucide-react'
+import { CreditCard, Zap } from 'lucide-react'
 import Button from '../ui/Button'
 import Input from '../ui/Input'
 import { TOPUP_PRESETS } from '../../utils/constants'
@@ -66,7 +66,7 @@ export default function TopUpPanel({ onTopupSuccess }) {
       <div className="flex items-center justify-between">
         <h2 className="font-display text-base font-bold text-text">Top up wallet</h2>
         <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-2.5 py-0.5 text-xs font-semibold text-primary">
-          <Sparkles size={12} /> Instant credit
+          <Zap size={12} /> Instant credit
         </span>
       </div>
 

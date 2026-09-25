@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Calculator, TrendingUp, Award, DollarSign, Calendar, Sparkles, Target } from 'lucide-react'
+import { Calculator, TrendingUp, Award, DollarSign, Calendar, Zap, Target } from 'lucide-react'
 import { formatGHS, GHSToPesewas } from '../../utils/formatCurrency'
 
 const MILESTONES = [
@@ -160,7 +160,7 @@ export default function MarginSimulator() {
             <div className="col-span-2 rounded-xl border border-success/30 bg-success/10 p-4 shadow-sm">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-success">Monthly Projected Income</span>
-                <Sparkles size={16} className="text-success" />
+                <Zap size={16} className="text-success" />
               </div>
               <p className="mt-1.5 font-display text-2xl font-black text-success">
                 {formatGHS(calculations.monthly)}

@@ -6,7 +6,7 @@ import {
   Megaphone,
   Phone,
   Send,
-  Sparkles,
+  Flame,
   TrendingUp,
   AlertTriangle,
   ShieldCheck,
@@ -208,7 +208,7 @@ export default function CustomerBuyData() {
               <TrendingUp size={14} className="text-success" /> {bundles.length} live offers
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-text-muted shadow-sm">
-              <Sparkles size={14} className="text-primary" /> Best-value deals highlighted
+              <CheckCircle2 size={14} className="text-primary" /> Best-value deals highlighted
             </span>
           </div>
         </div>
@@ -372,7 +372,7 @@ export default function CustomerBuyData() {
             {featuredBundles.length > 0 && (
               <div className="mt-5">
                 <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-text-muted mb-3">
-                  <Sparkles size={14} className="text-primary" />
+                  <Flame size={14} className="text-primary" />
                   <span>Featured Best-Value Packages</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5">

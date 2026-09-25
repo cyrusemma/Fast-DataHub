@@ -9,7 +9,7 @@ import {
   CheckCheck,
   CheckCircle2,
   AlertCircle,
-  Sparkles,
+  Zap,
   ArrowRight,
 } from 'lucide-react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
@@ -227,7 +227,7 @@ export default function TopBar({ onMenuClick, title: customTitle }) {
                         {notif.type === 'wallet' ? (
                           <CheckCircle2 size={16} />
                         ) : notif.type === 'feature' ? (
-                          <Sparkles size={16} />
+                          <Zap size={16} />
                         ) : (
                           <AlertCircle size={16} />
                         )}
