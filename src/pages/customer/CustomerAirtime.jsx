@@ -115,7 +115,7 @@ export default function CustomerAirtime() {
       queryClient.invalidateQueries({ queryKey: ['my-stats'] })
       queryClient.invalidateQueries({ queryKey: ['transactions'] })
 
-      toast.success(`GHS ${rawCost.toFixed(2)} airtime sent successfully to ${phone}!`)
+      toast.success(`Airtime order of GHS ${rawCost.toFixed(2)} to ${phone} submitted! Telecom dispatch in progress.`)
       setCompletedTx(tx)
     } catch (err) {
       toast.error(err.message || 'Failed to dispatch airtime. Please try again.')

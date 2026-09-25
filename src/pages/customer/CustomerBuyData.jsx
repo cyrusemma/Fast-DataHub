@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import {
   CheckCircle,
@@ -15,6 +16,8 @@ import {
   Wallet,
   RotateCcw,
   CheckCircle2,
+  Clock,
+  Truck,
 } from 'lucide-react'
 import PageHeader from '../../components/shared/PageHeader'
 import NetworkSelector from '../../components/shared/NetworkSelector'
@@ -135,7 +138,7 @@ export default function CustomerBuyData() {
         queryClient.invalidateQueries({ queryKey: ['transactions'] }),
         queryClient.invalidateQueries({ queryKey: ['my-stats'] }),
       ])
-      toast.success('Data bundle delivered successfully!')
+      toast.success('Order placed! Telecom dispatch is currently processing.')
     } catch (err) {
       toast.error(err.message || 'Purchase failed. Please try again.')
     } finally {
@@ -144,31 +147,49 @@ export default function CustomerBuyData() {
   }
 
   if (done) {
+    const isSuccess = done.status === 'SUCCESS' || done.status === 'DELIVERED'
     return (
       <div className="mx-auto max-w-xl rounded-3xl border border-border bg-surface p-6 sm:p-10 text-center shadow-xl animate-fade-in">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-success shadow-inner">
-          <CheckCircle size={42} strokeWidth={2.5} />
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/15 text-primary shadow-inner">
+          <Clock size={40} className="animate-pulse" strokeWidth={2.5} />
         </div>
-        <h1 className="mt-6 font-display text-2xl sm:text-3xl font-black text-text">Bundle Delivered!</h1>
+        <h1 className="mt-6 font-display text-2xl sm:text-3xl font-black text-text">
+          Order Placed & Processing
+        </h1>
         <p className="mt-2 text-sm text-text-muted leading-relaxed">
-          <strong className="text-text">{done.metadata?.bundle_name || 'Data Bundle'}</strong> was successfully
-          dispatched to <strong className="font-mono text-text">{done.recipient_phone}</strong>.
+          Your order for <strong className="text-text">{done.metadata?.bundle_name || 'Data Bundle'}</strong> to{' '}
+          <strong className="font-mono text-text">{done.recipient_phone}</strong> has been received by the gateway.
+          Telecom network delivery typically completes in <strong>30–120 seconds</strong>.
         </p>
 
-        <div className="mt-6 rounded-2xl border border-border bg-surface-raised p-4 text-xs space-y-2">
-          <div className="flex justify-between">
+        <div className="mt-6 rounded-2xl border border-border bg-surface-raised p-4 text-xs space-y-2.5 text-left">
+          <div className="flex justify-between items-center">
+            <span className="text-text-muted">Status:</span>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-bold">
+              <span className="h-2 w-2 rounded-full bg-primary animate-ping" />
+              Processing with Carrier
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
             <span className="text-text-muted">Transaction Reference:</span>
             <span className="font-mono font-bold text-text">{done.reference || 'REF-' + Date.now()}</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <span className="text-text-muted">Amount Deducted:</span>
-            <span className="font-bold text-primary">{formatGHS(done.amount || bundlePrice)}</span>
+            <span className="font-bold text-primary font-mono">{formatGHS(done.amount || bundlePrice)}</span>
           </div>
         </div>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <Link
+            to="/track"
+            className="flex items-center justify-center gap-2 rounded-xl border border-primary bg-primary px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-primary/90 transition"
+          >
+            <Truck size={16} /> Track Order Live
+          </Link>
           <Button
             size="lg"
+            variant="outline"
             icon={RotateCcw}
             onClick={() => {
               setDone(null)

@@ -27,8 +27,11 @@ export default function Badge({ variant = 'neutral', children, className, dot = 
 
 const STATUS_MAP = {
   SUCCESS: 'success',
+  DELIVERED: 'success',
   PAID: 'success',
   ACTIVE: 'success',
+  PROCESSING: 'info',
+  IN_PROGRESS: 'info',
   PENDING: 'warning',
   FAILED: 'danger',
   SUSPENDED: 'danger',

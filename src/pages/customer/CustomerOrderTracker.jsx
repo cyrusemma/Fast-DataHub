@@ -146,10 +146,22 @@ export default function CustomerOrderTracker() {
 
             {/* Step Timeline */}
             <div className="mt-8">
-              <h4 className="font-display text-sm font-bold text-text mb-6">Fulfillment Timeline</h4>
+              <div className="flex items-center justify-between mb-6">
+                <h4 className="font-display text-sm font-bold text-text">Fulfillment Timeline</h4>
+                {result.status === 'PROCESSING' || result.status === 'PENDING' ? (
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
+                    <span className="h-2 w-2 rounded-full bg-primary animate-ping" />
+                    Order Processing
+                  </span>
+                ) : null}
+              </div>
+
               <div className="relative border-l-2 border-primary/30 ml-4 space-y-8 pl-6">
                 {TIMELINE_STEPS.map((step, idx) => {
-                  const isCompleted = result.status === 'SUCCESS' || idx < 3
+                  const isDelivered = result.status === 'SUCCESS' || result.status === 'DELIVERED'
+                  const isCompleted = idx < 2 || (idx === 2 && isDelivered) || (idx === 3 && isDelivered)
+                  const isCurrent = idx === 2 && !isDelivered
+
                   return (
                     <div key={step.step} className="relative">
                       {/* Step Circle Indicator */}
@@ -158,19 +170,37 @@ export default function CustomerOrderTracker() {
                           'absolute -left-[33px] top-0 h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold transition-all shadow-sm',
                           isCompleted
                             ? 'bg-primary text-white ring-4 ring-primary/20'
+                            : isCurrent
+                            ? 'bg-amber-500 text-white ring-4 ring-amber-500/20 animate-pulse'
                             : 'bg-surface-raised border border-border text-text-muted'
                         )}
                       >
-                        {isCompleted ? <CheckCircle2 size={14} /> : step.step}
+                        {isCompleted ? <CheckCircle2 size={14} /> : isCurrent ? <Clock size={14} /> : step.step}
                       </div>
 
                       <div>
-                        <h5 className="font-bold text-xs sm:text-sm text-text">{step.title}</h5>
+                        <div className="flex items-center gap-2">
+                          <h5 className="font-bold text-xs sm:text-sm text-text">{step.title}</h5>
+                          {isCurrent && (
+                            <span className="text-[10px] font-bold text-amber-500 bg-amber-500/10 px-2 py-0.2 rounded-full">
+                              In Progress
+                            </span>
+                          )}
+                        </div>
                         <p className="text-xs text-text-muted mt-0.5">{step.desc}</p>
                       </div>
                     </div>
                   )
                 })}
+              </div>
+
+              <div className="mt-8 p-3.5 rounded-2xl bg-surface-raised border border-border text-xs text-text-muted space-y-1">
+                <p className="font-bold text-text flex items-center gap-1.5">
+                  <ShieldCheck size={14} className="text-primary" /> Delivery Status Protocol
+                </p>
+                <p>
+                  Orders remain in <strong>Processing</strong> while the telecom carrier queues and confirms delivery on the SIM line. Delivery confirmation is received via carrier API status receipt within 30–120 seconds.
+                </p>
               </div>
             </div>
           </div>
