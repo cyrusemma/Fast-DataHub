@@ -3,22 +3,31 @@ import { cn } from '../../utils/cn'
 
 const SELECTOR_STYLES = {
   MTN: {
-    bg: 'bg-gradient-to-br from-amber-400/20 via-yellow-500/10 to-surface hover:border-amber-400',
-    selected: 'border-amber-500 ring-2 ring-amber-400/50 bg-amber-400/20 shadow-[0_0_15px_rgba(245,158,11,0.25)]',
-    badge: 'bg-[#FFCC00] text-black font-extrabold',
-    bar: 'bg-gradient-to-r from-amber-400 to-yellow-500',
+    bg: 'bg-gradient-to-br from-amber-400/10 via-yellow-500/5 to-surface hover:border-amber-400',
+    selected: 'border-2 border-yellow-200 ring-4 ring-amber-400/60 bg-gradient-to-br from-amber-400 via-yellow-400 to-amber-500 text-slate-950 shadow-[0_0_25px_rgba(245,158,11,0.6)]',
+    badge: 'bg-[#FFCC00] text-slate-950 font-black shadow-sm',
+    badgeSelected: 'bg-slate-950 text-[#FFCC00] font-black shadow-sm',
+    bar: 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 h-1.5',
+    subtext: 'text-text-muted',
+    subtextSelected: 'text-amber-950/80 font-bold',
   },
   TELECEL: {
-    bg: 'bg-gradient-to-br from-red-600/20 via-rose-600/10 to-surface hover:border-red-500',
-    selected: 'border-red-600 ring-2 ring-red-500/50 bg-red-600/20 shadow-[0_0_15px_rgba(239,68,68,0.25)]',
-    badge: 'bg-[#E40000] text-white font-extrabold',
-    bar: 'bg-gradient-to-r from-red-600 to-rose-600',
+    bg: 'bg-gradient-to-br from-red-600/10 via-rose-600/5 to-surface hover:border-red-500',
+    selected: 'border-2 border-rose-300 ring-4 ring-red-500/60 bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white shadow-[0_0_25px_rgba(239,68,68,0.6)]',
+    badge: 'bg-[#E40000] text-white font-black shadow-sm',
+    badgeSelected: 'bg-white text-red-600 font-black shadow-sm',
+    bar: 'bg-gradient-to-r from-red-600 via-rose-500 to-red-600 h-1.5',
+    subtext: 'text-text-muted',
+    subtextSelected: 'text-rose-100/90 font-bold',
   },
   AT: {
-    bg: 'bg-gradient-to-br from-blue-600/20 via-indigo-600/10 to-red-500/20 hover:border-blue-500',
-    selected: 'border-blue-600 ring-2 ring-blue-500/50 bg-blue-600/20 shadow-[0_0_15px_rgba(37,99,235,0.25)]',
-    badge: 'bg-gradient-to-r from-[#003087] to-[#E40000] text-white font-extrabold',
-    bar: 'bg-gradient-to-r from-blue-600 to-red-500',
+    bg: 'bg-gradient-to-br from-blue-600/10 via-indigo-600/5 to-red-500/10 hover:border-blue-500',
+    selected: 'border-2 border-blue-300 ring-4 ring-blue-500/60 bg-gradient-to-br from-blue-600 via-indigo-600 to-red-600 text-white shadow-[0_0_25px_rgba(37,99,235,0.6)]',
+    badge: 'bg-gradient-to-r from-[#003087] to-[#E40000] text-white font-black shadow-sm',
+    badgeSelected: 'bg-white text-blue-700 font-black shadow-sm',
+    bar: 'bg-gradient-to-r from-blue-600 via-indigo-500 to-red-500 h-1.5',
+    subtext: 'text-text-muted',
+    subtextSelected: 'text-blue-100/90 font-bold',
   },
 }
 
@@ -40,12 +49,24 @@ export default function NetworkSelector({ value, onChange }) {
             )}
           >
             {/* Top radiant line */}
-            <div className={cn('absolute top-0 left-0 right-0 h-1', style.bar)} />
+            {!isSelected && <div className={cn('absolute top-0 left-0 right-0 h-1.5', style.bar)} />}
 
-            <span className={cn('mb-1.5 inline-flex rounded-md px-2 py-0.5 text-xs shadow-sm', style.badge)}>
+            <span
+              className={cn(
+                'mb-1.5 inline-flex rounded-md px-2 py-0.5 text-xs shadow-sm',
+                isSelected ? style.badgeSelected : style.badge
+              )}
+            >
               {network.label}
             </span>
-            <span className="block text-[11px] font-semibold text-text-muted">Browse packages</span>
+            <span
+              className={cn(
+                'block text-[11px] font-semibold',
+                isSelected ? style.subtextSelected : style.subtext
+              )}
+            >
+              Browse packages
+            </span>
           </button>
         )
       })}
