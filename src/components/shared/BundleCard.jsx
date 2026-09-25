@@ -1,4 +1,4 @@
-import { CheckCircle } from 'lucide-react'
+import { CheckCircle, RotateCcw } from 'lucide-react'
 import { formatGHS } from '../../utils/formatCurrency'
 import { formatDataSize } from '../../utils/formatDate'
 import { NETWORKS } from '../../utils/constants'
@@ -6,6 +6,8 @@ import { cn } from '../../utils/cn'
 
 export default function BundleCard({ bundle, selected, onSelect }) {
   const network = NETWORKS[bundle.network]
+  const hasRollover = bundle.network === 'TELECEL' || bundle.name?.toLowerCase().includes('rollover')
+
   return (
     <button
       type="button"
@@ -18,16 +20,23 @@ export default function BundleCard({ bundle, selected, onSelect }) {
       )}
     >
       <div className="w-full">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-1.5 flex-wrap">
           <span
             className="inline-flex items-center rounded-lg px-2.5 py-0.5 text-[11px] sm:text-xs font-bold shadow-sm shrink-0"
             style={{ backgroundColor: network?.color, color: network?.text }}
           >
             {network?.label || bundle.network}
           </span>
-          <span className="text-[11px] font-medium text-text-muted rounded-full border border-border px-2 py-0.5 bg-surface-raised">
-            {bundle.validity_days ? `${bundle.validity_days}d validity` : 'Non-expiry'}
-          </span>
+          <div className="flex items-center gap-1">
+            {hasRollover && (
+              <span className="text-[10px] font-bold text-emerald-500 rounded-full border border-emerald-500/30 px-2 py-0.5 bg-emerald-500/10 flex items-center gap-0.5">
+                <RotateCcw size={10} /> Rollover
+              </span>
+            )}
+            <span className="text-[11px] font-medium text-text-muted rounded-full border border-border px-2 py-0.5 bg-surface-raised">
+              {bundle.validity_days ? `${bundle.validity_days}d` : 'Non-expiry'}
+            </span>
+          </div>
         </div>
 
         <p className="mt-3 font-display text-lg sm:text-2xl font-black text-text tracking-tight">

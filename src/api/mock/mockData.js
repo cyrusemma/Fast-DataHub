@@ -2,7 +2,7 @@
 // page reloads. Mirrors the Supabase schema in DATAHUB_BUILD_1.md.
 // Money is always integer pesewas (GHS * 100).
 
-const DB_KEY = 'datahub-mock-db-v2'
+const DB_KEY = 'datahub-mock-db-v3'
 
 const uuid = () =>
   (crypto.randomUUID && crypto.randomUUID()) ||
@@ -32,10 +32,16 @@ const BUNDLE_SEED = [
   ['MTN', 'MTN 30GB Bundle', 30720, 0, 10880, 11800, 11270, 11550],
   ['MTN', 'MTN 40GB Bundle', 40960, 0, 14580, 15800, 15100, 15480],
   ['MTN', 'MTN 50GB Bundle', 51200, 0, 18180, 19700, 18830, 19300],
-  ['TELECEL', 'Telecel 1GB Non-Expiry', 1024, 0, 400, 450, 420, 435],
-  ['TELECEL', 'Telecel 2GB Non-Expiry', 2048, 0, 800, 900, 840, 870],
-  ['TELECEL', 'Telecel 5GB Non-Expiry', 5120, 0, 1950, 2200, 2050, 2120],
-  ['TELECEL', 'Telecel 10GB Non-Expiry', 10240, 0, 3800, 4300, 4000, 4150],
+  ['TELECEL', 'Telecel 10GB Rollover', 10240, 60, 3550, 3850, 3680, 3770],
+  ['TELECEL', 'Telecel 15GB Rollover', 15360, 60, 5050, 5485, 5250, 5370],
+  ['TELECEL', 'Telecel 20GB Rollover', 20480, 60, 6800, 7380, 7060, 7220],
+  ['TELECEL', 'Telecel 25GB Rollover', 25600, 60, 8360, 9075, 8690, 8880],
+  ['TELECEL', 'Telecel 30GB Rollover', 30720, 60, 9920, 10770, 10310, 10540],
+  ['TELECEL', 'Telecel 35GB Rollover', 35840, 60, 12040, 13065, 12510, 12790],
+  ['TELECEL', 'Telecel 40GB Rollover', 40960, 60, 13140, 14260, 13660, 13960],
+  ['TELECEL', 'Telecel 45GB Rollover', 46080, 60, 14240, 15455, 14800, 15130],
+  ['TELECEL', 'Telecel 50GB Rollover', 51200, 60, 16360, 17750, 17000, 17380],
+  ['TELECEL', 'Telecel 100GB Rollover', 102400, 60, 36500, 39700, 38000, 38900],
   ['AT', 'AT 1GB Non-Expiry', 1024, 0, 380, 430, 400, 415],
   ['AT', 'AT 2GB Non-Expiry', 2048, 0, 760, 860, 800, 830],
   ['AT', 'AT 5GB Non-Expiry', 5120, 0, 1900, 2150, 2000, 2070],
