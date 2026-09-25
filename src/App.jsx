@@ -11,6 +11,12 @@ import ForgotPassword from './pages/auth/ForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import CustomerDashboard from './pages/customer/CustomerDashboard'
 import CustomerBuyData from './pages/customer/CustomerBuyData'
+import CustomerAirtime from './pages/customer/CustomerAirtime'
+import CustomerCheckers from './pages/customer/CustomerCheckers'
+import CustomerBills from './pages/customer/CustomerBills'
+import CustomerReferrals from './pages/customer/CustomerReferrals'
+import CustomerSpinWin from './pages/customer/CustomerSpinWin'
+import CustomerOrderTracker from './pages/customer/CustomerOrderTracker'
 import CustomerHistory from './pages/customer/CustomerHistory'
 import CustomerWallet from './pages/customer/CustomerWallet'
 import AgentDashboard from './pages/agent/AgentDashboard'
@@ -34,7 +40,8 @@ import AdminThemeSettings from './pages/admin/AdminThemeSettings'
 import NotFound from './pages/NotFound'
 import ErrorBoundary from './components/ErrorBoundary'
 
-const customerRoles = ['CUSTOMER']
+const customerRoles = ['CUSTOMER', 'RESELLER', 'AGENT', 'SUPER_ADMIN', 'NETWORK_ADMIN']
+const customerOnly = ['CUSTOMER']
 const resellerRoles = ['RESELLER']
 const agentRoles = ['AGENT']
 const adminRoles = ['SUPER_ADMIN', 'NETWORK_ADMIN']
@@ -58,10 +65,16 @@ export default function App() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      <Route element={<Guard roles={[...customerRoles, ...resellerRoles, ...agentRoles, ...auditRoles]}><DashboardLayout /></Guard>}>
+      <Route element={<Guard roles={[...customerRoles, ...auditRoles]}><DashboardLayout /></Guard>}>
         <Route path="/" element={<RoleRedirect />} />
         <Route path="/home" element={<Guard roles={customerRoles}><CustomerDashboard /></Guard>} />
         <Route path="/buy" element={<Guard roles={customerRoles}><CustomerBuyData /></Guard>} />
+        <Route path="/airtime" element={<Guard roles={customerRoles}><CustomerAirtime /></Guard>} />
+        <Route path="/checkers" element={<Guard roles={customerRoles}><CustomerCheckers /></Guard>} />
+        <Route path="/bills" element={<Guard roles={customerRoles}><CustomerBills /></Guard>} />
+        <Route path="/spin" element={<Guard roles={customerRoles}><CustomerSpinWin /></Guard>} />
+        <Route path="/referrals" element={<Guard roles={customerRoles}><CustomerReferrals /></Guard>} />
+        <Route path="/track" element={<Guard roles={customerRoles}><CustomerOrderTracker /></Guard>} />
         <Route path="/history" element={<Guard roles={customerRoles}><CustomerHistory /></Guard>} />
         <Route path="/wallet" element={<Guard roles={customerRoles}><CustomerWallet /></Guard>} />
 

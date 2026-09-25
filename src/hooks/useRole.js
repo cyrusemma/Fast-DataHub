@@ -38,6 +38,12 @@ const navItems = {
   CUSTOMER: [
     { label: 'Home', icon: 'Home', path: '/home' },
     { label: 'Buy Data', icon: 'Wifi', path: '/buy' },
+    { label: 'Buy Airtime', icon: 'PhoneCall', path: '/airtime' },
+    { label: 'Result Checkers', icon: 'GraduationCap', path: '/checkers' },
+    { label: 'Pay Bills', icon: 'Zap', path: '/bills' },
+    { label: 'Spin & Win', icon: 'Dices', path: '/spin' },
+    { label: 'Refer & Earn', icon: 'Share2', path: '/referrals' },
+    { label: 'Track Order', icon: 'Truck', path: '/track' },
     { label: 'History', icon: 'History', path: '/history' },
     { label: 'Wallet', icon: 'Wallet', path: '/wallet' },
   ],

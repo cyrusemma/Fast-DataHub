@@ -35,10 +35,72 @@ serve(async (req) => {
     if (deductError) throw deductError
     const { data: newWallet } = await supabase.from('wallets').select('balance').eq('user_id', user.id).single()
 
-    const reference = `DH-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`
+    const reference = `${Deno.env.get('DATAMART_REF_PREFIX') || 'FDH'}-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`
     
-    // Simulate telco dispatch or live telco API call
-    const telecomSuccess = true
+    // Upstream Telco Integration (DataMart GH)
+    const datamartApiKey = Deno.env.get('DATAMART_API_KEY')
+    const datamartApiSecret = Deno.env.get('DATAMART_API_SECRET')
+    
+    let telecomSuccess = false
+    let upstreamResponseData: Record<string, any> = {}
+    let upstreamErrorMsg = ''
+
+    if (datamartApiKey) {
+      try {
+        // Map telecom networks: MTN -> YELLO, TELECEL -> TELECEL, AIRTELTIGO/AT -> AT
+        const networkMap: Record<string, string> = {
+          MTN: 'YELLO',
+          TELECEL: 'TELECEL',
+          AIRTELTIGO: 'AT',
+          AT: 'AT',
+        }
+        const dmNetwork = networkMap[bundle.network.toUpperCase()] || bundle.network.toUpperCase()
+
+        // Capacity in GB (e.g., 5120MB -> "5", 1024MB -> "1", 2048MB -> "2")
+        const capacityInGB = bundle.data_size_mb >= 1024
+          ? String(Math.round((bundle.data_size_mb / 1024) * 10) / 10)
+          : String(bundle.data_size_mb / 1024)
+
+        const dmPayload = {
+          phoneNumber: recipientPhone,
+          network: dmNetwork,
+          capacity: capacityInGB,
+          gateway: 'wallet',
+          ref: reference,
+        }
+
+        const dmHeaders: Record<string, string> = {
+          'Content-Type': 'application/json',
+          'X-API-Key': datamartApiKey,
+        }
+        if (datamartApiSecret) {
+          dmHeaders['X-API-Secret'] = datamartApiSecret
+        }
+
+        const dmRes = await fetch('https://api.datamartgh.shop/api/developer/purchase', {
+          method: 'POST',
+          headers: dmHeaders,
+          body: JSON.stringify(dmPayload),
+        })
+
+        const dmJson = await dmRes.json().catch(() => ({}))
+        upstreamResponseData = dmJson
+
+        if (dmRes.ok && (dmJson.status === 'success' || dmJson.success || dmRes.status === 200 || dmRes.status === 201)) {
+          telecomSuccess = true
+        } else {
+          telecomSuccess = false
+          upstreamErrorMsg = dmJson.message || dmJson.error || `DataMart HTTP ${dmRes.status}`
+        }
+      } catch (err: any) {
+        telecomSuccess = false
+        upstreamErrorMsg = err.message || 'Upstream connection failure'
+      }
+    } else {
+      // Mock mode for local development when DATAMART_API_KEY is not configured
+      telecomSuccess = true
+      upstreamResponseData = { simulated: true, provider: 'DataMart GH Mock' }
+    }
 
     if (telecomSuccess) {
       const { data: tx, error: txError } = await supabase.from('transactions').insert({
@@ -53,7 +115,12 @@ serve(async (req) => {
         network: bundle.network,
         recipient_phone: recipientPhone,
         bundle_id: bundle.id,
-        metadata: { bundle_name: bundle.name, data_size_mb: bundle.data_size_mb, telecom_mocked: true },
+        metadata: {
+          bundle_name: bundle.name,
+          data_size_mb: bundle.data_size_mb,
+          telecom_provider: 'DataMart GH',
+          upstream_response: upstreamResponseData,
+        },
       }).select().single()
       if (txError) throw txError
 
@@ -82,7 +149,11 @@ serve(async (req) => {
         network: bundle.network,
         recipient_phone: recipientPhone,
         bundle_id: bundle.id,
-        metadata: { error: 'Telecom provider failure' },
+        metadata: {
+          error: upstreamErrorMsg || 'Telecom provider failure',
+          upstream_response: upstreamResponseData,
+          telecom_provider: 'DataMart GH',
+        },
       })
 
       // Trigger fraud check: count 1-hour failures

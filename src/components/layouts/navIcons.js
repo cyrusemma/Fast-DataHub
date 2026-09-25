@@ -1,11 +1,11 @@
 import {
   LayoutDashboard, Users, ArrowLeftRight, UserCheck, Package, DollarSign,
   ScrollText, ShoppingCart, Banknote, Wallet, Wifi, TrendingUp, Home, History,
-  Palette,
+  Palette, PhoneCall, GraduationCap, Receipt, Share2, Dices, Truck, Tv, Zap,
 } from 'lucide-react'
 
 export const navIcons = {
   LayoutDashboard, Users, ArrowLeftRight, UserCheck, Package, DollarSign,
   ScrollText, ShoppingCart, Banknote, Wallet, Wifi, TrendingUp, Home, History,
-  Palette,
+  Palette, PhoneCall, GraduationCap, Receipt, Share2, Dices, Truck, Tv, Zap,
 }

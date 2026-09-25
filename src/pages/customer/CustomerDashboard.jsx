@@ -40,6 +40,84 @@ export default function CustomerDashboard() {
         </div>
       </div>
 
+      {/* Quick Services Hub */}
+      <div className="mt-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-display text-sm font-bold text-text uppercase tracking-wider">
+            Quick Services Hub
+          </h3>
+          <span className="text-xs text-text-muted">Instant delivery via DataMart GH</span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <Link
+            to="/buy"
+            className="card p-3.5 flex flex-col items-center text-center hover:border-primary/50 transition duration-200 group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-2 group-hover:scale-105 transition">
+              <Wifi size={20} />
+            </div>
+            <span className="font-bold text-xs text-text">Buy Data</span>
+            <span className="text-[10px] text-text-muted mt-0.5">Non-expiry</span>
+          </Link>
+
+          <Link
+            to="/airtime"
+            className="card p-3.5 flex flex-col items-center text-center hover:border-primary/50 transition duration-200 group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-2 group-hover:scale-105 transition">
+              <span className="font-bold text-sm">₵</span>
+            </div>
+            <span className="font-bold text-xs text-text">Airtime</span>
+            <span className="text-[10px] text-success font-semibold mt-0.5">2% Discount</span>
+          </Link>
+
+          <Link
+            to="/checkers"
+            className="card p-3.5 flex flex-col items-center text-center hover:border-primary/50 transition duration-200 group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-2 group-hover:scale-105 transition">
+              <span className="font-bold text-xs">WAEC</span>
+            </div>
+            <span className="font-bold text-xs text-text">Checkers</span>
+            <span className="text-[10px] text-text-muted mt-0.5">WASSCE & BECE</span>
+          </Link>
+
+          <Link
+            to="/bills"
+            className="card p-3.5 flex flex-col items-center text-center hover:border-primary/50 transition duration-200 group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-2 group-hover:scale-105 transition">
+              <span className="font-bold text-xs">ECG</span>
+            </div>
+            <span className="font-bold text-xs text-text">Pay Bills</span>
+            <span className="text-[10px] text-text-muted mt-0.5">Power & Water</span>
+          </Link>
+
+          <Link
+            to="/spin"
+            className="card p-3.5 flex flex-col items-center text-center hover:border-primary/50 transition duration-200 group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-2 group-hover:scale-105 transition">
+              <span className="font-bold text-sm">🎯</span>
+            </div>
+            <span className="font-bold text-xs text-text">Spin & Win</span>
+            <span className="text-[10px] text-primary font-semibold mt-0.5">Free Daily</span>
+          </Link>
+
+          <Link
+            to="/track"
+            className="card p-3.5 flex flex-col items-center text-center hover:border-primary/50 transition duration-200 group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center mb-2 group-hover:scale-105 transition">
+              <span className="font-bold text-xs">🔍</span>
+            </div>
+            <span className="font-bold text-xs text-text">Track Order</span>
+            <span className="text-[10px] text-text-muted mt-0.5">Live Status</span>
+          </Link>
+        </div>
+      </div>
+
       <div className="mt-6">
         <QuickReUp />
       </div>
