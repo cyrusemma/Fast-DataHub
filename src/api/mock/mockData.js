@@ -2,7 +2,7 @@
 // page reloads. Mirrors the Supabase schema in DATAHUB_BUILD_1.md.
 // Money is always integer pesewas (GHS * 100).
 
-const DB_KEY = 'datahub-mock-db-v1'
+const DB_KEY = 'datahub-mock-db-v2'
 
 const uuid = () =>
   (crypto.randomUUID && crypto.randomUUID()) ||
@@ -17,18 +17,29 @@ const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
 const BUNDLE_SEED = [
-  ['MTN', 'MTN 100MB Daily', 100, 1, 100, 150, 120, 130],
-  ['MTN', 'MTN 1GB Weekly', 1024, 7, 500, 700, 550, 600],
-  ['MTN', 'MTN 3GB Monthly', 3072, 30, 1200, 1600, 1300, 1400],
-  ['MTN', 'MTN 10GB Monthly', 10240, 30, 3500, 4500, 3800, 4000],
-  ['TELECEL', 'Telecel 200MB Daily', 200, 1, 120, 180, 140, 155],
-  ['TELECEL', 'Telecel 1.5GB Weekly', 1536, 7, 600, 800, 650, 700],
-  ['TELECEL', 'Telecel 4GB Monthly', 4096, 30, 1400, 1900, 1550, 1650],
-  ['TELECEL', 'Telecel 12GB Monthly', 12288, 30, 4000, 5000, 4200, 4500],
-  ['AT', 'AT 150MB Daily', 150, 1, 110, 160, 130, 140],
-  ['AT', 'AT 1GB Weekly', 1024, 7, 520, 720, 570, 620],
-  ['AT', 'AT 3.5GB Monthly', 3584, 30, 1300, 1750, 1400, 1500],
-  ['AT', 'AT 8GB Monthly', 8192, 30, 2800, 3600, 3000, 3200],
+  // [network, name, mb, days, cost_price, selling_price, agent_price, reseller_price]
+  ['MTN', 'MTN 1GB Bundle', 1024, 0, 375, 410, 390, 400],
+  ['MTN', 'MTN 2GB Bundle', 2048, 0, 780, 850, 810, 830],
+  ['MTN', 'MTN 3GB Bundle', 3072, 0, 1150, 1250, 1190, 1220],
+  ['MTN', 'MTN 4GB Bundle', 4096, 0, 1540, 1680, 1600, 1640],
+  ['MTN', 'MTN 5GB Bundle', 5120, 0, 1880, 2050, 1950, 2000],
+  ['MTN', 'MTN 6GB Bundle', 6144, 0, 2200, 2400, 2290, 2350],
+  ['MTN', 'MTN 8GB Bundle', 8192, 0, 2940, 3200, 3050, 3130],
+  ['MTN', 'MTN 10GB Bundle', 10240, 0, 3720, 4050, 3860, 3960],
+  ['MTN', 'MTN 15GB Bundle', 15360, 0, 5480, 5950, 5680, 5820],
+  ['MTN', 'MTN 20GB Bundle', 20480, 0, 7320, 7950, 7590, 7780],
+  ['MTN', 'MTN 25GB Bundle', 25600, 0, 8850, 9600, 9170, 9400],
+  ['MTN', 'MTN 30GB Bundle', 30720, 0, 10880, 11800, 11270, 11550],
+  ['MTN', 'MTN 40GB Bundle', 40960, 0, 14580, 15800, 15100, 15480],
+  ['MTN', 'MTN 50GB Bundle', 51200, 0, 18180, 19700, 18830, 19300],
+  ['TELECEL', 'Telecel 1GB Non-Expiry', 1024, 0, 400, 450, 420, 435],
+  ['TELECEL', 'Telecel 2GB Non-Expiry', 2048, 0, 800, 900, 840, 870],
+  ['TELECEL', 'Telecel 5GB Non-Expiry', 5120, 0, 1950, 2200, 2050, 2120],
+  ['TELECEL', 'Telecel 10GB Non-Expiry', 10240, 0, 3800, 4300, 4000, 4150],
+  ['AT', 'AT 1GB Non-Expiry', 1024, 0, 380, 430, 400, 415],
+  ['AT', 'AT 2GB Non-Expiry', 2048, 0, 760, 860, 800, 830],
+  ['AT', 'AT 5GB Non-Expiry', 5120, 0, 1900, 2150, 2000, 2070],
+  ['AT', 'AT 10GB Non-Expiry', 10240, 0, 3700, 4200, 3900, 4050],
 ]
 
 function buildSeed() {
