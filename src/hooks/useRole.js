@@ -3,6 +3,7 @@ import { useAuthStore } from '../store/authStore'
 const navItems = {
   SUPER_ADMIN: [
     { label: 'Dashboard', icon: 'LayoutDashboard', path: '/admin' },
+    { label: 'Pricing Engine', icon: 'Calculator', path: '/admin/pricing' },
     { label: 'Users', icon: 'Users', path: '/admin/users' },
     { label: 'Transactions', icon: 'ArrowLeftRight', path: '/admin/transactions' },
     { label: 'Agents', icon: 'UserCheck', path: '/admin/agents' },
@@ -13,6 +14,7 @@ const navItems = {
   ],
   NETWORK_ADMIN: [
     { label: 'Dashboard', icon: 'LayoutDashboard', path: '/admin' },
+    { label: 'Pricing Engine', icon: 'Calculator', path: '/admin/pricing' },
     { label: 'Transactions', icon: 'ArrowLeftRight', path: '/admin/transactions' },
     { label: 'Agents', icon: 'UserCheck', path: '/admin/agents' },
     { label: 'Bundles', icon: 'Package', path: '/admin/bundles' },

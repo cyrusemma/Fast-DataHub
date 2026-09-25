@@ -39,6 +39,7 @@ const ROUTE_TITLES = {
   '/reseller/earnings': 'Sales & Margins',
   '/reseller/wallet': 'Reseller Wallet',
   '/admin': 'Admin Dashboard',
+  '/admin/pricing': 'Pricing Engine',
   '/admin/users': 'User Management',
   '/admin/transactions': 'Transaction Records',
   '/admin/agents': 'Agent Network',

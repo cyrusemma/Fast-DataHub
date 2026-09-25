@@ -37,6 +37,7 @@ import AdminBundles from './pages/admin/AdminBundles'
 import AdminFinance from './pages/admin/AdminFinance'
 import AdminAuditLogs from './pages/admin/AdminAuditLogs'
 import AdminThemeSettings from './pages/admin/AdminThemeSettings'
+import AdminPricingEngine from './pages/admin/AdminPricingEngine'
 import NotFound from './pages/NotFound'
 import ErrorBoundary from './components/ErrorBoundary'
 
@@ -91,6 +92,7 @@ export default function App() {
         <Route path="/reseller/wallet" element={<Guard roles={resellerRoles}><ResellerWallet /></Guard>} />
 
         <Route path="/admin" element={<Guard roles={adminRoles}><AdminDashboard /></Guard>} />
+        <Route path="/admin/pricing" element={<Guard roles={adminRoles}><AdminPricingEngine /></Guard>} />
         <Route path="/admin/users" element={<Guard roles={adminRoles}><AdminUsers /></Guard>} />
         <Route path="/admin/transactions" element={<Guard roles={auditRoles}><AdminTransactions /></Guard>} />
         <Route path="/admin/agents" element={<Guard roles={adminRoles}><AdminAgents /></Guard>} />

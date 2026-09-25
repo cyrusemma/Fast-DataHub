@@ -42,6 +42,7 @@ import {
   normalizeGhanaPhone,
   detectGhanaNetwork,
 } from '../../utils/phoneValidation'
+import { pricingEngine } from '../../services/pricingEngine'
 import { cn } from '../../utils/cn'
 
 export default function CustomerBuyData() {
@@ -142,6 +143,17 @@ export default function CustomerBuyData() {
       .sort((a, b) => valueScore(a) - valueScore(b))
       .slice(0, 3)
   }, [bundles])
+
+  // Active Flash Sale promo evaluation
+  const activeFlashSale = useMemo(() => {
+    const config = pricingEngine.loadConfig()
+    const now = new Date()
+    return config.flashSales.find((f) => {
+      if (!f.active) return false
+      if (f.network !== 'ALL' && f.network !== network) return false
+      return now >= new Date(f.startTime) && now <= new Date(f.endTime)
+    })
+  }, [network])
 
   const bundlePrice = bundle?.price ?? bundle?.selling_price ?? 0
   const hasSufficientBalance = balance >= bundlePrice
@@ -302,6 +314,24 @@ export default function CustomerBuyData() {
                 }}
               />
             </div>
+
+            {/* Flash Sale Banner if active */}
+            {activeFlashSale && (
+              <div className="mt-3.5 rounded-xl border border-amber-500/40 bg-gradient-to-r from-amber-500/20 via-yellow-500/15 to-amber-600/20 p-3 shadow-sm flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2">
+                  <Flame className="text-amber-500 shrink-0 animate-pulse" size={18} />
+                  <div>
+                    <p className="text-xs font-black text-amber-500 tracking-tight">
+                      {activeFlashSale.name} (-{activeFlashSale.discountPct}% OFF)
+                    </p>
+                    <p className="text-[10px] text-text-muted line-clamp-1">{activeFlashSale.bannerText}</p>
+                  </div>
+                </div>
+                <span className="shrink-0 text-[10px] font-black px-2 py-0.5 rounded bg-amber-500 text-slate-950">
+                  ACTIVE
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Step 2: Recipient Phone Number & Verification */}
