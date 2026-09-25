@@ -18,6 +18,7 @@ import {
   CheckCircle2,
   Clock,
   Truck,
+  Star,
 } from 'lucide-react'
 import PageHeader from '../../components/shared/PageHeader'
 import NetworkSelector from '../../components/shared/NetworkSelector'
@@ -58,17 +59,63 @@ export default function CustomerBuyData() {
   const [loading, setLoading] = useState(false)
   const queryClient = useQueryClient()
 
+  // Manual User Favorites from localStorage
+  const [favoriteIds, setFavoriteIds] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('fdh_user_favorites') || '[]')
+    } catch {
+      return []
+    }
+  })
+
+  const toggleFavorite = (b) => {
+    setFavoriteIds((prev) => {
+      const exists = prev.includes(b.id)
+      const next = exists ? prev.filter((id) => id !== b.id) : [...prev, b.id]
+      localStorage.setItem('fdh_user_favorites', JSON.stringify(next))
+      if (exists) {
+        toast.info(`Removed ${b.name} from favorites`)
+      } else {
+        toast.success(`Saved ${b.name} to your favorites! ⭐`)
+      }
+      return next
+    })
+  }
+
   // Bundles query
   const { data: bundles = [], isLoading } = useQuery({
     queryKey: ['bundles', network, role],
     queryFn: () => getBundles({ network, role }),
   })
 
-  // Recent recipients query for 1-tap quick fill
+  // Recent recipients & purchase history query for 1-tap quick fill + smart frequency algorithm
   const { data: recentTxs = [] } = useQuery({
     queryKey: ['recent-recipients-buy-data'],
-    queryFn: () => getRecentTransactions(10),
+    queryFn: () => getRecentTransactions(15),
   })
+
+  // Intelligent Frequency-Based Auto-Suggestion Algorithm
+  const frequencyMap = useMemo(() => {
+    const counts = {}
+    recentTxs.forEach((t) => {
+      if (t.bundle_id) {
+        counts[t.bundle_id] = (counts[t.bundle_id] || 0) + 1
+      }
+      if (t.metadata?.bundle_name) {
+        counts[t.metadata.bundle_name] = (counts[t.metadata.bundle_name] || 0) + 1
+      }
+    })
+    return counts
+  }, [recentTxs])
+
+  // Suggested & Favorite bundles for this network
+  const favoriteAndSuggestedBundles = useMemo(() => {
+    return bundles.filter((b) => {
+      const isManualFav = favoriteIds.includes(b.id)
+      const count = frequencyMap[b.id] || frequencyMap[b.name] || 0
+      return isManualFav || count >= 2
+    })
+  }, [bundles, favoriteIds, frequencyMap])
 
   const recentRecipients = useMemo(() => {
     const list = []
@@ -389,6 +436,33 @@ export default function CustomerBuyData() {
               </span>
             </div>
 
+            {/* Smart Favorites & Frequently Bought Shelf */}
+            {favoriteAndSuggestedBundles.length > 0 && (
+              <div className="mt-5 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-surface to-primary/5 p-4 shadow-sm">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-500">
+                    <Star size={14} className="fill-amber-500 text-amber-500" />
+                    <span>Your Favorite & Frequent {network} Packages</span>
+                  </div>
+                  <span className="text-[10px] text-text-muted">1-tap re-order</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5">
+                  {favoriteAndSuggestedBundles.map((item) => (
+                    <BundleCard
+                      key={`fav-${item.id}`}
+                      bundle={item}
+                      selected={bundle?.id === item.id}
+                      onSelect={setBundle}
+                      isFavorite={favoriteIds.includes(item.id)}
+                      onToggleFavorite={toggleFavorite}
+                      frequencyCount={frequencyMap[item.id] || frequencyMap[item.name] || 0}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Featured Best-Value Row */}
             {featuredBundles.length > 0 && (
               <div className="mt-5">
@@ -397,65 +471,31 @@ export default function CustomerBuyData() {
                   <span>Featured Best-Value Packages</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5">
-                  {featuredBundles.map((item, index) => {
-                    const isSelected = bundle?.id === item.id
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => setBundle(item)}
-                        className={cn(
-                          'group relative flex flex-col justify-between rounded-2xl border p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
-                          isSelected
-                            ? 'border-primary bg-primary/5 ring-2 ring-primary/30 shadow-primary/10'
-                            : 'border-border bg-surface hover:border-border-strong hover:bg-surface-raised'
-                        )}
-                      >
-                        <div>
-                          <div className="flex items-start justify-between gap-2">
-                            <span
-                              className="inline-flex rounded-lg px-2.5 py-0.5 text-[11px] font-bold text-white shadow-sm"
-                              style={{
-                                backgroundColor: index === 0 ? '#16A34A' : index === 1 ? '#D97706' : '#2563EB',
-                              }}
-                            >
-                              {index === 0 ? 'Best Value' : index === 1 ? 'Most Popular' : 'Hot Pick'}
-                            </span>
-                            <span className="text-[11px] font-semibold text-text-subtle">{item.network}</span>
-                          </div>
-                          <p className="mt-3 font-display text-xl sm:text-2xl font-black text-text">
-                            {formatDataSize(item.data_size_mb)}
-                          </p>
-                          <p className="mt-0.5 text-xs text-text-muted">
-                            {item.validity_days ? `${item.validity_days}d validity` : 'Non-expiry'} · {item.name}
-                          </p>
-                        </div>
-
-                        <div className="mt-4 flex items-end justify-between border-t border-border/70 pt-2.5">
-                          <p className="font-display text-lg font-black text-primary">
-                            {formatGHS(item.price ?? item.selling_price)}
-                          </p>
-                          <span
-                            className={cn(
-                              'text-xs font-semibold rounded-lg px-2 py-1 transition',
-                              isSelected ? 'bg-primary text-white' : 'text-text-muted group-hover:text-primary'
-                            )}
-                          >
-                            {isSelected ? '✓ Selected' : 'Select'}
-                          </span>
-                        </div>
-                      </button>
-                    )
-                  })}
+                  {featuredBundles.map((item) => (
+                    <BundleCard
+                      key={`feat-${item.id}`}
+                      bundle={item}
+                      selected={bundle?.id === item.id}
+                      onSelect={setBundle}
+                      isFavorite={favoriteIds.includes(item.id)}
+                      onToggleFavorite={toggleFavorite}
+                      frequencyCount={frequencyMap[item.id] || frequencyMap[item.name] || 0}
+                    />
+                  ))}
                 </div>
               </div>
             )}
 
             {/* All Bundles Grid */}
             <div className="mt-6 pt-5 border-t border-border">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-text-muted mb-3.5">
-                All {network} Bundles
-              </h3>
+              <div className="flex items-center justify-between mb-3.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-text-muted">
+                  All {network} Bundles
+                </h3>
+                <span className="text-[11px] text-text-muted">
+                  Click the <Star size={11} className="inline text-amber-500" /> on any card to save to favorites
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5">
                 {isLoading ? (
@@ -467,6 +507,9 @@ export default function CustomerBuyData() {
                       bundle={b}
                       selected={bundle?.id === b.id}
                       onSelect={setBundle}
+                      isFavorite={favoriteIds.includes(b.id)}
+                      onToggleFavorite={toggleFavorite}
+                      frequencyCount={frequencyMap[b.id] || frequencyMap[b.name] || 0}
                     />
                   ))
                 ) : (
