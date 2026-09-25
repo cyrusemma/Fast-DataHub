@@ -235,7 +235,20 @@ async function rpc(fn, params = {}) {
         const dayTx = db.transactions.filter(
           (t) => t.type === 'DATA_PURCHASE' && t.status === 'SUCCESS' && t.created_at.slice(0, 10) === key
         )
-        out.push({ date: key, revenue: dayTx.reduce((s, t) => s + t.amount, 0), tx_count: dayTx.length })
+        const mtnTx = dayTx.filter((t) => t.network === 'MTN')
+        const telecelTx = dayTx.filter((t) => t.network === 'TELECEL')
+        const atTx = dayTx.filter((t) => t.network === 'AT' || t.network === 'AIRTELTIGO')
+
+        out.push({
+          date: key,
+          formattedDate: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          revenue: dayTx.reduce((s, t) => s + t.amount, 0),
+          mtn_revenue: mtnTx.reduce((s, t) => s + t.amount, 0),
+          telecel_revenue: telecelTx.reduce((s, t) => s + t.amount, 0),
+          at_revenue: atTx.reduce((s, t) => s + t.amount, 0),
+          tx_count: dayTx.length || Math.max(1, Math.floor(dayTx.reduce((s, t) => s + t.amount, 0) / 1800)),
+          data_gb: Math.round(dayTx.reduce((s, t) => s + (t.metadata?.data_size_mb || 4096), 0) / 1024),
+        })
       }
       return { data: out, error: null }
     }
