@@ -275,6 +275,55 @@ export class PricingEngine {
     }
     return Math.round(val * 100) / 100
   }
+
+  /**
+   * Agent custom pricing overrides
+   */
+  getAgentCustomPrices(agentId = 'default') {
+    try {
+      const key = `fdh_agent_custom_prices_${agentId}`
+      const stored = localStorage.getItem(key)
+      return stored ? JSON.parse(stored) : {}
+    } catch (e) {
+      return {}
+    }
+  }
+
+  saveAgentCustomPrices(agentId = 'default', pricesMap) {
+    try {
+      const key = `fdh_agent_custom_prices_${agentId}`
+      localStorage.setItem(key, JSON.stringify(pricesMap))
+      window.dispatchEvent(new CustomEvent('fdh_agent_pricing_updated', { detail: pricesMap }))
+    } catch (e) {
+      console.error('Failed to save agent custom prices', e)
+    }
+    return pricesMap
+  }
+
+  /**
+   * Reseller custom pricing overrides
+   */
+  getResellerCustomPrices(resellerId = 'default') {
+    try {
+      const key = `fdh_reseller_custom_prices_${resellerId}`
+      const stored = localStorage.getItem(key)
+      return stored ? JSON.parse(stored) : {}
+    } catch (e) {
+      return {}
+    }
+  }
+
+  saveResellerCustomPrices(resellerId = 'default', pricesMap) {
+    try {
+      const key = `fdh_reseller_custom_prices_${resellerId}`
+      localStorage.setItem(key, JSON.stringify(pricesMap))
+      window.dispatchEvent(new CustomEvent('fdh_reseller_pricing_updated', { detail: pricesMap }))
+    } catch (e) {
+      console.error('Failed to save reseller custom prices', e)
+    }
+    return pricesMap
+  }
 }
 
 export const pricingEngine = new PricingEngine()
+

@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { pricingEngine } from '../services/pricingEngine'
 
 const PRICE_FIELD = {
   CUSTOMER: 'selling_price',
@@ -8,13 +9,28 @@ const PRICE_FIELD = {
   NETWORK_ADMIN: 'cost_price',
 }
 
-export async function getBundles({ network, role } = {}) {
+export async function getBundles({ network, role, userId } = {}) {
   let query = supabase.from('data_bundles').select('*').eq('is_active', true).order('data_size_mb')
   if (network) query = query.eq('network', network)
   const { data, error } = await query
   if (error) throw error
   const priceField = PRICE_FIELD[role] || 'selling_price'
-  return (data || []).map((b) => ({ ...b, price: b[priceField] }))
+
+  // Apply custom overrides if user is reseller or agent
+  let customOverrides = {}
+  if (role === 'RESELLER') {
+    customOverrides = pricingEngine.getResellerCustomPrices(userId || 'reseller-default')
+  } else if (role === 'AGENT') {
+    customOverrides = pricingEngine.getAgentCustomPrices(userId || 'agent-default')
+  }
+
+  return (data || [])
+    .filter((b) => customOverrides[b.id]?.enabled !== false)
+    .map((b) => {
+      let customPrice = customOverrides[b.id]?.selling_price
+      let price = (role === 'RESELLER' && customPrice) ? customPrice : b[priceField]
+      return { ...b, price }
+    })
 }
 
 // Admin CRUD

@@ -26,6 +26,7 @@ const navItems = {
   AGENT: [
     { label: 'Dashboard', icon: 'LayoutDashboard', path: '/agent' },
     { label: 'Buy Bulk', icon: 'ShoppingCart', path: '/agent/buy-bulk' },
+    { label: 'Pricing & Margins', icon: 'Calculator', path: '/agent/pricing' },
     { label: 'My Resellers', icon: 'Users', path: '/agent/resellers' },
     { label: 'Commissions', icon: 'Banknote', path: '/agent/commissions' },
     { label: 'Brand & Theme', icon: 'Palette', path: '/agent/theme' },
@@ -34,6 +35,7 @@ const navItems = {
   RESELLER: [
     { label: 'Dashboard', icon: 'LayoutDashboard', path: '/reseller' },
     { label: 'Sell Data', icon: 'Wifi', path: '/reseller/sell' },
+    { label: 'Pricing Engine', icon: 'Calculator', path: '/reseller/pricing' },
     { label: 'Earnings', icon: 'TrendingUp', path: '/reseller/earnings' },
     { label: 'Wallet', icon: 'Wallet', path: '/reseller/wallet' },
   ],

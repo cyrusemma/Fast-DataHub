@@ -21,12 +21,14 @@ import CustomerHistory from './pages/customer/CustomerHistory'
 import CustomerWallet from './pages/customer/CustomerWallet'
 import AgentDashboard from './pages/agent/AgentDashboard'
 import AgentBuyBulk from './pages/agent/AgentBuyBulk'
+import AgentPricingEngine from './pages/agent/AgentPricingEngine'
 import AgentResellers from './pages/agent/AgentResellers'
 import AgentCommissions from './pages/agent/AgentCommissions'
 import AgentWallet from './pages/agent/AgentWallet'
 import AgentThemeSettings from './pages/agent/AgentThemeSettings'
 import ResellerDashboard from './pages/reseller/ResellerDashboard'
 import ResellerSellData from './pages/reseller/ResellerSellData'
+import ResellerPricingEngine from './pages/reseller/ResellerPricingEngine'
 import ResellerEarnings from './pages/reseller/ResellerEarnings'
 import ResellerWallet from './pages/reseller/ResellerWallet'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -81,6 +83,7 @@ export default function App() {
 
         <Route path="/agent" element={<Guard roles={agentRoles}><AgentDashboard /></Guard>} />
         <Route path="/agent/buy-bulk" element={<Guard roles={agentRoles}><AgentBuyBulk /></Guard>} />
+        <Route path="/agent/pricing" element={<Guard roles={agentRoles}><AgentPricingEngine /></Guard>} />
         <Route path="/agent/resellers" element={<Guard roles={agentRoles}><AgentResellers /></Guard>} />
         <Route path="/agent/commissions" element={<Guard roles={agentRoles}><AgentCommissions /></Guard>} />
         <Route path="/agent/theme" element={<Guard roles={agentRoles}><AgentThemeSettings /></Guard>} />
@@ -88,6 +91,7 @@ export default function App() {
 
         <Route path="/reseller" element={<Guard roles={resellerRoles}><ResellerDashboard /></Guard>} />
         <Route path="/reseller/sell" element={<Guard roles={resellerRoles}><ResellerSellData /></Guard>} />
+        <Route path="/reseller/pricing" element={<Guard roles={resellerRoles}><ResellerPricingEngine /></Guard>} />
         <Route path="/reseller/earnings" element={<Guard roles={resellerRoles}><ResellerEarnings /></Guard>} />
         <Route path="/reseller/wallet" element={<Guard roles={resellerRoles}><ResellerWallet /></Guard>} />
 
