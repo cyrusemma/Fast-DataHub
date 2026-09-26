@@ -89,7 +89,7 @@ export const DEFAULT_PRICING_CONFIG = {
       active: false,
       startTime: new Date(Date.now() - 3600000).toISOString(),
       endTime: new Date(Date.now() + 86400000 * 2).toISOString(),
-      bannerText: '⚡ Flash Sale Live: Extra 3% OFF all carrier bundles this weekend!',
+      bannerText: 'Flash Sale Live: Extra 3% OFF all carrier bundles this weekend!',
     },
   ],
 

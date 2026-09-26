@@ -487,8 +487,8 @@ export default function AgentPricingEngine() {
               <span className="text-[10px] text-text-muted">{forecastDailyVolume * 30} orders/mo</span>
             </div>
 
-            <div className="col-span-2 p-2.5 rounded-lg bg-primary/10 border border-primary/20 text-xs text-primary font-bold">
-              ✨ At this rate, your estimated annual revenue is {formatGHS(forecastDailyVolume * forecastAvgMargin * 365)}!
+            <div className="col-span-2 p-2.5 rounded-lg bg-primary/10 border border-primary/20 text-xs text-primary font-bold flex items-center justify-center gap-1.5">
+              <Sparkles size={14} /> At this rate, your estimated annual revenue is {formatGHS(forecastDailyVolume * forecastAvgMargin * 365)}!
             </div>
           </div>
         </div>

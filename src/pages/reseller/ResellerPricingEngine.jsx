@@ -451,8 +451,8 @@ export default function ResellerPricingEngine() {
               <span className="text-[10px] text-text-muted">{forecastDailyVolume * 30} bundles/mo</span>
             </div>
 
-            <div className="col-span-2 p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-500 font-bold">
-              💰 Extra estimated annual take-home: {formatGHS(forecastDailyVolume * forecastAvgMargin * 365)}!
+            <div className="col-span-2 p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-500 font-bold flex items-center justify-center gap-1.5">
+              <Sparkles size={14} /> Extra estimated annual take-home: {formatGHS(forecastDailyVolume * forecastAvgMargin * 365)}!
             </div>
           </div>
         </div>

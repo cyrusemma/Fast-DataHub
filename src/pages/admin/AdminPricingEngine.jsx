@@ -72,7 +72,7 @@ export default function AdminPricingEngine() {
     active: true,
     startTime: new Date().toISOString().slice(0, 16),
     endTime: new Date(Date.now() + 86400000 * 3).toISOString().slice(0, 16),
-    bannerText: '⚡ Flash Sale Live: Extra discount on all packages!',
+    bannerText: 'Flash Sale Live: Extra discount on all packages!',
   })
 
   const handleSaveConfig = () => {
@@ -757,12 +757,20 @@ export default function AdminPricingEngine() {
             <div className="flex items-center justify-between pb-2 border-b border-border">
               <h3 className="font-display text-base font-bold text-text">Waterfall Margin Breakdown</h3>
               <span className={cn(
-                'text-xs font-black px-2.5 py-1 rounded-full border',
+                'text-xs font-black px-2.5 py-1 rounded-full border flex items-center gap-1.5',
                 simResult.isHealthyMargin
                   ? 'bg-emerald-500/15 text-emerald-500 border-emerald-500/30'
                   : 'bg-amber-500/15 text-amber-500 border-amber-500/30'
               )}>
-                {simResult.isHealthyMargin ? '✨ Healthy Margin' : '⚠️ Narrow Margin'}
+                {simResult.isHealthyMargin ? (
+                  <>
+                    <Sparkles size={13} /> Healthy Margin
+                  </>
+                ) : (
+                  <>
+                    <AlertTriangle size={13} /> Narrow Margin
+                  </>
+                )}
               </span>
             </div>
 
@@ -784,21 +792,27 @@ export default function AdminPricingEngine() {
 
               {simResult.activeFlashSale && (
                 <div className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500">
-                  <span>⚡ Flash Sale Promo ({simResult.activeFlashSale.name}):</span>
+                  <span className="flex items-center gap-1.5">
+                    <Flame size={13} /> Flash Sale Promo ({simResult.activeFlashSale.name}):
+                  </span>
                   <span className="font-mono font-bold">-{simResult.activeFlashSale.discountPct}%</span>
                 </div>
               )}
 
               {simResult.appliedVolumeBreak && (
                 <div className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-500">
-                  <span>📦 Volume Break ({simResult.appliedVolumeBreak.label}):</span>
+                  <span className="flex items-center gap-1.5">
+                    <Layers size={13} /> Volume Break ({simResult.appliedVolumeBreak.label}):
+                  </span>
                   <span className="font-mono font-bold">-{simResult.appliedVolumeBreak.extraDiscountPct}%</span>
                 </div>
               )}
 
               {simResult.isFloorGuarded && (
                 <div className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400">
-                  <span>🛡️ Min Profit Floor Safeguard Triggered:</span>
+                  <span className="flex items-center gap-1.5">
+                    <ShieldCheck size={13} /> Min Profit Floor Safeguard:
+                  </span>
                   <span className="font-bold">Protected</span>
                 </div>
               )}
