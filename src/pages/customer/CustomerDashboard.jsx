@@ -54,76 +54,54 @@ export default function CustomerDashboard() {
       <div className="mt-6">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-display text-sm font-bold text-text uppercase tracking-wider">
-            Quick Services Hub
+            Quick Actions & Services
           </h3>
-          <span className="text-xs text-text-muted">Instant delivery via DataMart GH</span>
+          <span className="text-xs text-text-muted">Instant delivery on all networks</span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <Link
             to="/buy"
-            className="card p-3.5 flex flex-col items-center text-center hover:border-primary/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
+            className="card p-4 flex flex-col items-center text-center hover:border-primary/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
           >
-            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-2 group-hover:bg-primary group-hover:text-white transition-colors duration-200">
-              <Wifi size={20} />
+            <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-2.5 group-hover:bg-primary group-hover:text-white transition-colors duration-200">
+              <Wifi size={22} />
             </div>
-            <span className="font-bold text-xs text-text">Buy Data</span>
-            <span className="text-[10px] text-text-muted mt-0.5">Non-expiry</span>
+            <span className="font-bold text-sm text-text">Buy Data</span>
+            <span className="text-xs text-text-muted mt-0.5">MTN, Telecel, AT</span>
           </Link>
 
           <Link
             to="/airtime"
-            className="card p-3.5 flex flex-col items-center text-center hover:border-emerald-500/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
+            className="card p-4 flex flex-col items-center text-center hover:border-emerald-500/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
           >
-            <div className="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-2 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-200">
-              <PhoneCall size={18} />
+            <div className="h-11 w-11 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-2.5 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-200">
+              <PhoneCall size={20} />
             </div>
-            <span className="font-bold text-xs text-text">Airtime</span>
-            <span className="text-[10px] text-success font-semibold mt-0.5">2% Discount</span>
+            <span className="font-bold text-sm text-text">Buy Airtime</span>
+            <span className="text-xs text-success font-semibold mt-0.5">Instant Recharge</span>
           </Link>
 
           <Link
-            to="/checkers"
-            className="card p-3.5 flex flex-col items-center text-center hover:border-blue-500/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
+            to="/wallet"
+            className="card p-4 flex flex-col items-center text-center hover:border-amber-500/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
           >
-            <div className="h-10 w-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-2 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-200">
-              <GraduationCap size={20} />
+            <div className="h-11 w-11 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-2.5 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-200">
+              <Wallet size={20} />
             </div>
-            <span className="font-bold text-xs text-text">Checkers</span>
-            <span className="text-[10px] text-text-muted mt-0.5">WASSCE & BECE</span>
+            <span className="font-bold text-sm text-text">Fund Wallet</span>
+            <span className="text-xs text-text-muted mt-0.5">MoMo & Card</span>
           </Link>
 
           <Link
-            to="/bills"
-            className="card p-3.5 flex flex-col items-center text-center hover:border-amber-500/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
+            to="/history"
+            className="card p-4 flex flex-col items-center text-center hover:border-purple-500/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
           >
-            <div className="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-2 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-200">
-              <Zap size={20} />
+            <div className="h-11 w-11 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-2.5 group-hover:bg-purple-500 group-hover:text-white transition-colors duration-200">
+              <History size={20} />
             </div>
-            <span className="font-bold text-xs text-text">Pay Bills</span>
-            <span className="text-[10px] text-text-muted mt-0.5">Power & Water</span>
-          </Link>
-
-          <Link
-            to="/spin"
-            className="card p-3.5 flex flex-col items-center text-center hover:border-purple-500/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
-          >
-            <div className="h-10 w-10 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-2 group-hover:bg-purple-500 group-hover:text-white transition-colors duration-200">
-              <Dices size={20} />
-            </div>
-            <span className="font-bold text-xs text-text">Spin & Win</span>
-            <span className="text-[10px] text-primary font-semibold mt-0.5">Free Daily</span>
-          </Link>
-
-          <Link
-            to="/track"
-            className="card p-3.5 flex flex-col items-center text-center hover:border-cyan-500/50 hover:shadow-md transition-all duration-200 group cursor-pointer"
-          >
-            <div className="h-10 w-10 rounded-xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center mb-2 group-hover:bg-cyan-500 group-hover:text-white transition-colors duration-200">
-              <Truck size={20} />
-            </div>
-            <span className="font-bold text-xs text-text">Track Order</span>
-            <span className="text-[10px] text-text-muted mt-0.5">Live Status</span>
+            <span className="font-bold text-sm text-text">Transaction History</span>
+            <span className="text-xs text-text-muted mt-0.5">Track & Receipts</span>
           </Link>
         </div>
       </div>

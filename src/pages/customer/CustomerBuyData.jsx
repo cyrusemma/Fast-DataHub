@@ -17,6 +17,7 @@ import {
   RotateCcw,
   CheckCircle2,
   Clock,
+  History,
   Truck,
   Star,
 } from 'lucide-react'
@@ -241,10 +242,10 @@ export default function CustomerBuyData() {
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            to="/track"
+            to="/history"
             className="flex items-center justify-center gap-2 rounded-xl border border-primary bg-primary px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-primary/90 transition"
           >
-            <Truck size={16} /> Track Order Live
+            <History size={16} /> View Order History
           </Link>
           <Button
             size="lg"
