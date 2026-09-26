@@ -51,7 +51,7 @@ const ROUTE_TITLES = {
   '/admin/theme': 'Platform Theme Settings',
 }
 
-const WALLET_PATH = { AGENT: '/agent/wallet', RESELLER: '/reseller/wallet', CUSTOMER: '/wallet' }
+const WALLET_PATH = { AGENT: '/wallet', RESELLER: '/wallet', CUSTOMER: '/wallet' }
 
 const INITIAL_NOTIFICATIONS = [
   {
