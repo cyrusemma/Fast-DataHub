@@ -39,12 +39,12 @@ const navItems = {
     { label: 'Wallet', icon: 'Wallet', path: '/wallet' },
   ],
   CUSTOMER: [
-    { label: 'Home', icon: 'Home', path: '/home' },
     { label: 'Buy Data', icon: 'Wifi', path: '/buy' },
     { label: 'Buy Airtime', icon: 'PhoneCall', path: '/airtime' },
-    { label: 'Refer & Earn', icon: 'Share2', path: '/referrals' },
     { label: 'History', icon: 'History', path: '/history' },
     { label: 'Wallet', icon: 'Wallet', path: '/wallet' },
+    { label: 'Refer & Earn', icon: 'Share2', path: '/referrals' },
+    { label: 'Overview', icon: 'LayoutDashboard', path: '/home' },
   ],
 }
 
@@ -52,8 +52,8 @@ const dashboardPaths = {
   SUPER_ADMIN: '/admin',
   NETWORK_ADMIN: '/admin',
   AGENT: '/agent',
-  RESELLER: '/reseller',
-  CUSTOMER: '/home',
+  RESELLER: '/buy',
+  CUSTOMER: '/buy',
   AUDITOR: '/admin/audit-logs',
 }
 
