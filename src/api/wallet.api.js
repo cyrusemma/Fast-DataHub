@@ -81,6 +81,34 @@ export async function startTopupCheckout({ amount, email, reference, metadata = 
   })
 }
 
+export async function startDirectPurchaseCheckout({ amount, email, reference, metadata = {} }) {
+  if (IS_MOCK) {
+    return { reference: reference || `PAYSTACK-MOCK-${Date.now()}` }
+  }
+
+  const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY
+  if (!publicKey) throw new Error('Missing Paystack public key. Please configure VITE_PAYSTACK_PUBLIC_KEY.')
+
+  const PaystackPop = await loadPaystackCheckout()
+
+  return new Promise((resolve, reject) => {
+    const checkout = PaystackPop.setup({
+      key: publicKey,
+      email,
+      amount,
+      ref: reference || `DIR-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+      currency: 'GHS',
+      metadata,
+      callback: (response) => {
+        resolve(response)
+      },
+      onClose: () => reject(new Error('Payment cancelled')),
+    })
+
+    checkout.openIframe()
+  })
+}
+
 // Mock-mode top-up: simulates a successful Paystack charge of `amount` pesewas.
 export async function mockTopUp(amount) {
   return mockTopup({ amount })

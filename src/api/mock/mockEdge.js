@@ -46,7 +46,7 @@ export async function mockFraudCheck(userId) {
   return { suspended: false, failedCount: failedTxs.length }
 }
 
-export async function mockBuyData({ bundleId, recipientPhone, idempotencyKey }) {
+export async function mockBuyData({ bundleId, recipientPhone, idempotencyKey, paymentMethod = 'WALLET', paystackRef = null }) {
   const db = getDB()
   const userId = currentUserId()
   if (!userId) throw new Error('Unauthorized')
@@ -67,13 +67,17 @@ export async function mockBuyData({ bundleId, recipientPhone, idempotencyKey }) 
   // 4. Price by role
   const price = bundle[PRICE_FIELD[profile.role] || 'selling_price']
 
-  // 5 + 6. Wallet check + deduct
-  const wallet = db.wallets.find((w) => w.user_id === userId)
-  if (!wallet || wallet.balance < price) throw new Error('Insufficient wallet balance')
-  const balanceBefore = wallet.balance
-  const { error: deductErr } = await mockSupabase.rpc('deduct_wallet', { p_user_id: userId, p_amount: price })
-  if (deductErr) throw new Error('Wallet deduction failed: ' + deductErr.message)
-  const balanceAfter = db.wallets.find((w) => w.user_id === userId).balance
+  // 5 + 6. Payment handling
+  const wallet = db.wallets.find((w) => w.user_id === userId) || { balance: 0 }
+  let balanceBefore = wallet.balance
+  let balanceAfter = wallet.balance
+
+  if (paymentMethod === 'WALLET') {
+    if (wallet.balance < price) throw new Error('Insufficient wallet balance')
+    const { error: deductErr } = await mockSupabase.rpc('deduct_wallet', { p_user_id: userId, p_amount: price })
+    if (deductErr) throw new Error('Wallet deduction failed: ' + deductErr.message)
+    balanceAfter = (db.wallets.find((w) => w.user_id === userId) || {}).balance || 0
+  }
 
   // 7. PENDING transaction
   const reference = `DH-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`
@@ -91,7 +95,12 @@ export async function mockBuyData({ bundleId, recipientPhone, idempotencyKey }) 
     network: bundle.network,
     recipient_phone: recipientPhone,
     bundle_id: bundleId,
-    metadata: { bundle_name: bundle.name, data_size_mb: bundle.data_size_mb },
+    metadata: {
+      bundle_name: bundle.name,
+      data_size_mb: bundle.data_size_mb,
+      payment_method: paymentMethod,
+      paystack_ref: paystackRef,
+    },
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   }

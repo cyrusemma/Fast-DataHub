@@ -1,13 +1,13 @@
 import { supabase, IS_MOCK } from './supabase'
 import { mockBuyData } from './mock/mockEdge'
 
-export async function buyData({ bundleId, recipientPhone, idempotencyKey }) {
-  if (IS_MOCK) return mockBuyData({ bundleId, recipientPhone, idempotencyKey })
+export async function buyData({ bundleId, recipientPhone, idempotencyKey, paymentMethod = 'WALLET', paystackRef = null }) {
+  if (IS_MOCK) return mockBuyData({ bundleId, recipientPhone, idempotencyKey, paymentMethod, paystackRef })
   const { data: { session } } = await supabase.auth.getSession()
   const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/buy-data`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ bundleId, recipientPhone, idempotencyKey }),
+    body: JSON.stringify({ bundleId, recipientPhone, idempotencyKey, paymentMethod, paystackRef }),
   })
   const data = await res.json()
   if (!data.success) throw new Error(data.message)
