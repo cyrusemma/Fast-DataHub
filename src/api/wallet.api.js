@@ -51,10 +51,11 @@ function loadPaystackCheckout() {
 }
 
 export async function startTopupCheckout({ amount, email, reference, metadata = {} }) {
-  if (IS_MOCK) return mockTopup({ amount, reference })
-
   const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY
-  if (!publicKey) throw new Error('Missing Paystack public key')
+  if (!publicKey || publicKey.includes('your_key')) {
+    if (IS_MOCK) return mockTopup({ amount, reference })
+    throw new Error('Missing Paystack public key')
+  }
 
   const PaystackPop = await loadPaystackCheckout()
 
@@ -63,13 +64,18 @@ export async function startTopupCheckout({ amount, email, reference, metadata = 
       key: publicKey,
       email,
       amount,
-      ref: reference,
+      ref: reference || `TOP-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
       currency: 'GHS',
       metadata,
       callback: async (response) => {
         try {
-          const verified = await verifyTopup(response.reference || reference)
-          resolve(verified)
+          if (IS_MOCK) {
+            const res = await mockTopup({ amount, reference: response.reference || reference })
+            resolve(res)
+          } else {
+            const verified = await verifyTopup(response.reference || reference)
+            resolve(verified)
+          }
         } catch (error) {
           reject(error)
         }
@@ -82,12 +88,11 @@ export async function startTopupCheckout({ amount, email, reference, metadata = 
 }
 
 export async function startDirectPurchaseCheckout({ amount, email, reference, metadata = {} }) {
-  if (IS_MOCK) {
-    return { reference: reference || `PAYSTACK-MOCK-${Date.now()}` }
-  }
-
   const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY
-  if (!publicKey) throw new Error('Missing Paystack public key. Please configure VITE_PAYSTACK_PUBLIC_KEY.')
+  if (!publicKey || publicKey.includes('your_key')) {
+    if (IS_MOCK) return { reference: reference || `PAYSTACK-MOCK-${Date.now()}` }
+    throw new Error('Missing Paystack public key. Please configure VITE_PAYSTACK_PUBLIC_KEY.')
+  }
 
   const PaystackPop = await loadPaystackCheckout()
 
