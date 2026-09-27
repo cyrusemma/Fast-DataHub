@@ -20,6 +20,9 @@ import {
   History,
   Truck,
   Star,
+  CreditCard,
+  Zap,
+  Check,
 } from 'lucide-react'
 import PageHeader from '../../components/shared/PageHeader'
 import NetworkSelector from '../../components/shared/NetworkSelector'
@@ -32,6 +35,7 @@ import { NetworkBadge } from '../../components/ui/Badge'
 import { SkeletonCard } from '../../components/ui/Skeleton'
 import { getBundles } from '../../api/bundles.api'
 import { buyData, getRecentTransactions } from '../../api/transactions.api'
+import { startDirectPurchaseCheckout } from '../../api/wallet.api'
 import { useRole } from '../../hooks/useRole'
 import { useAuthStore } from '../../store/authStore'
 import { useWalletStore } from '../../store/walletStore'
@@ -55,6 +59,7 @@ export default function CustomerBuyData() {
   const [network, setNetwork] = useState('MTN')
   const [bundle, setBundle] = useState(null)
   const [phone, setPhone] = useState(profile?.phone || '')
+  const [paymentMethod, setPaymentMethod] = useState('PAYSTACK') // 'PAYSTACK' | 'WALLET'
   const [confirm, setConfirm] = useState(false)
   const [verifiedByUser, setVerifiedByUser] = useState(false)
   const [done, setDone] = useState(null)
@@ -178,18 +183,39 @@ export default function CustomerBuyData() {
       toast.error('Please check the verification box before continuing')
       return
     }
-    if (!hasSufficientBalance) {
-      toast.error('Insufficient wallet balance. Please top up your wallet.')
+    if (paymentMethod === 'WALLET' && !hasSufficientBalance) {
+      toast.error('Insufficient wallet balance. Please switch to Paystack Direct or top up your wallet.')
       return
     }
 
     setLoading(true)
     try {
+      let paystackRef = null
+
+      if (paymentMethod === 'PAYSTACK') {
+        const payRes = await startDirectPurchaseCheckout({
+          amount: bundlePrice,
+          email: profile?.email || 'customer@datahub.gh',
+          reference: `DIR-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`,
+          metadata: {
+            bundle_id: bundle.id,
+            bundle_name: bundle.name,
+            recipient_phone: normalizedPhone,
+            network,
+            user_id: profile?.id,
+          },
+        })
+        paystackRef = payRes.reference
+      }
+
       const tx = await buyData({
         bundleId: bundle.id,
         recipientPhone: normalizedPhone,
         idempotencyKey: crypto.randomUUID(),
+        paymentMethod,
+        paystackRef,
       })
+
       setDone(tx)
       setConfirm(false)
       await Promise.all([
@@ -200,7 +226,9 @@ export default function CustomerBuyData() {
       ])
       toast.success('Order placed! Telecom dispatch is currently processing.')
     } catch (err) {
-      toast.error(err.message || 'Purchase failed. Please try again.')
+      if (err.message !== 'Payment cancelled') {
+        toast.error(err.message || 'Purchase failed. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -421,6 +449,80 @@ export default function CustomerBuyData() {
                 </div>
               )}
 
+              {/* Step 3: Payment Method Selection */}
+              <div className="mt-4 pt-4 border-t border-border space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-display text-xs font-bold uppercase tracking-wider text-text-muted">
+                    Step 3 · Payment Method
+                  </h2>
+                  <span className="text-[10px] text-primary font-bold">Wallet Optional</span>
+                </div>
+
+                <div className="grid grid-cols-1 gap-2">
+                  {/* Option 1: Paystack Direct (Default & Recommended) */}
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('PAYSTACK')}
+                    className={cn(
+                      'relative flex items-start gap-3 rounded-xl border p-3 text-left transition',
+                      paymentMethod === 'PAYSTACK'
+                        ? 'border-primary bg-primary/10 shadow-sm'
+                        : 'border-border bg-surface-raised hover:border-primary/40 hover:bg-surface'
+                    )}
+                  >
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-white shadow-sm mt-0.5">
+                      <CreditCard size={16} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-text">Direct MoMo / Card (Paystack)</span>
+                        <span className="rounded-full bg-primary/20 px-2 py-0.5 text-[9px] font-extrabold text-primary">
+                          Recommended
+                        </span>
+                      </div>
+                      <p className="mt-0.5 text-[11px] text-text-muted leading-tight">
+                        Pay instantly via MTN MoMo, Telecel Cash, AT Money, or Cards without pre-funding wallet.
+                      </p>
+                    </div>
+                    {paymentMethod === 'PAYSTACK' && (
+                      <Check size={16} className="text-primary shrink-0 self-center" />
+                    )}
+                  </button>
+
+                  {/* Option 2: Wallet Balance */}
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('WALLET')}
+                    className={cn(
+                      'relative flex items-start gap-3 rounded-xl border p-3 text-left transition',
+                      paymentMethod === 'WALLET'
+                        ? 'border-primary bg-primary/10 shadow-sm'
+                        : 'border-border bg-surface-raised hover:border-primary/40 hover:bg-surface'
+                    )}
+                  >
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/15 text-amber-500 border border-amber-500/20 mt-0.5">
+                      <Wallet size={16} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-text">Prepaid Wallet Balance</span>
+                        <span className={cn('text-[11px] font-mono font-bold', hasSufficientBalance ? 'text-success' : 'text-danger')}>
+                          {formatGHS(balance)}
+                        </span>
+                      </div>
+                      <p className="mt-0.5 text-[11px] text-text-muted leading-tight">
+                        {hasSufficientBalance
+                          ? 'Instant 1-tap deduction from your prepaid wallet balance.'
+                          : `Insufficient balance (Need ${formatGHS(Math.max(0, bundlePrice - balance))} more).`}
+                      </p>
+                    </div>
+                    {paymentMethod === 'WALLET' && (
+                      <Check size={16} className="text-primary shrink-0 self-center" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
               {/* Selected summary & CTA button */}
               <div className="mt-4 pt-4 border-t border-border space-y-3">
                 <div className="flex items-center justify-between text-xs">
@@ -430,9 +532,9 @@ export default function CustomerBuyData() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-text-muted">Available Wallet:</span>
-                  <span className={cn('font-bold', hasSufficientBalance ? 'text-success' : 'text-danger')}>
-                    {formatGHS(balance)}
+                  <span className="text-text-muted">Payment Mode:</span>
+                  <span className="font-bold text-primary">
+                    {paymentMethod === 'PAYSTACK' ? 'Paystack (MoMo / Card)' : 'Wallet Balance'}
                   </span>
                 </div>
 
@@ -456,7 +558,7 @@ export default function CustomerBuyData() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-border pb-4">
               <div>
                 <h2 className="font-display text-base font-bold text-text">
-                  Step 3 · Select {network} Data Bundle
+                  Step 1 · Select {network} Data Bundle
                 </h2>
                 <p className="mt-0.5 text-xs text-text-muted">
                   Pick your preferred volume and validity. Best-value bundles are ranked first.
@@ -570,11 +672,13 @@ export default function CustomerBuyData() {
             </Button>
             <Button
               loading={loading}
-              disabled={!verifiedByUser || !hasSufficientBalance}
+              disabled={!verifiedByUser || (paymentMethod === 'WALLET' && !hasSufficientBalance)}
               onClick={submit}
               icon={ShieldCheck}
             >
-              Pay {formatGHS(bundlePrice)}
+              {paymentMethod === 'PAYSTACK'
+                ? `Pay ${formatGHS(bundlePrice)} via Paystack`
+                : `Pay ${formatGHS(bundlePrice)} from Wallet`}
             </Button>
           </>
         }
@@ -610,23 +714,40 @@ export default function CustomerBuyData() {
               <span className="font-bold text-text">{network}</span>
             </div>
             <div className="flex justify-between border-b border-border pb-2">
+              <span className="text-text-muted">Payment Source:</span>
+              <span className="font-bold text-primary">
+                {paymentMethod === 'PAYSTACK' ? 'Direct Paystack (MoMo / Card)' : 'Prepaid Wallet'}
+              </span>
+            </div>
+            <div className="flex justify-between border-b border-border pb-2">
               <span className="text-text-muted">Price:</span>
               <span className="font-display font-black text-primary text-base">
                 {formatGHS(bundlePrice)}
               </span>
             </div>
-            <div className="flex justify-between pt-1 text-xs">
-              <span className="text-text-muted">Wallet Balance After Purchase:</span>
-              <span className={cn('font-bold', hasSufficientBalance ? 'text-success' : 'text-danger')}>
-                {formatGHS(balanceAfterPurchase)}
-              </span>
-            </div>
+            {paymentMethod === 'WALLET' && (
+              <div className="flex justify-between pt-1 text-xs">
+                <span className="text-text-muted">Wallet Balance After Purchase:</span>
+                <span className={cn('font-bold', hasSufficientBalance ? 'text-success' : 'text-danger')}>
+                  {formatGHS(balanceAfterPurchase)}
+                </span>
+              </div>
+            )}
           </div>
 
-          {!hasSufficientBalance && (
-            <div className="flex items-center gap-2 rounded-xl border border-danger/30 bg-danger/10 p-3 text-xs text-danger font-semibold">
-              <AlertTriangle size={16} className="shrink-0" />
-              <span>Insufficient balance. Need {formatGHS(bundlePrice - balance)} more to purchase.</span>
+          {paymentMethod === 'WALLET' && !hasSufficientBalance && (
+            <div className="rounded-xl border border-danger/30 bg-danger/10 p-3 text-xs text-danger font-semibold space-y-2">
+              <div className="flex items-center gap-2">
+                <AlertTriangle size={16} className="shrink-0" />
+                <span>Insufficient wallet balance. Need {formatGHS(bundlePrice - balance)} more.</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPaymentMethod('PAYSTACK')}
+                className="w-full py-1.5 rounded-lg bg-primary text-white text-xs font-bold shadow-sm hover:brightness-105 transition"
+              >
+                Switch to Paystack Direct (No Wallet Funding Needed)
+              </button>
             </div>
           )}
 
